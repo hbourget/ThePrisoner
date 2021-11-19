@@ -9,9 +9,9 @@
 #include <arpa/inet.h>
 
 #include "../headers/srvcxnmanager.h"
+#include "../headers/configurationHandler.h"
 
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
-
 void init_sockets_array() {
     for (int i = 0; i < MAXSIMULTANEOUSCLIENTS; i++) {
         connections[i] = NULL;

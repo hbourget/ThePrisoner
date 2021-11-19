@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <stdio.h>
 #include <pthread.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -23,17 +22,20 @@
 #include <stdbool.h>
 
 #include "../headers/srvcxnmanager.h"
+#include "../headers/configurationHandler.h"
 
-/*
- *
- */
+int main(int argc, char** argv) 
+{
+    configuration config;
+    config = getConfig();
 
-int main(int argc, char** argv) {
+    printf("Config loaded from 'config.ini': name=%s, number=%d\n",
+        config.name, config.number);
+
     int sockfd = -1;
     int index = 1;
     connection_t *connection;
     pthread_t thread;
-
 
     /* init array*/
     init_sockets_array();
