@@ -1,6 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
-#include "../inih/ini.h"
+#include "../headers/ini.h"
 #include "../headers/configurationHandler.h"
 
 static int handler(void* config, const char* section, const char* name, const char* value)

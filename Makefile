@@ -1,13 +1,13 @@
-CXX = g++
+CXX = gcc
 
 SRC = ./sources/*.c
 OBJ = $(SRC:.cc=.o)
-EXEC = ./build/socketServer
+EXEC = ./build/ThePrisoner_Server
 
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CXX) $(LDFLAGS) -o $@ $(OBJ) $(LBLIBS) -fpermissive -lpthread inih/ini.c
+	$(CXX) $(LDFLAGS) -o $@ $(OBJ) $(LBLIBS) -lpthread
 
 clean:
 	rm -rf $(EXEC)
