@@ -7,7 +7,7 @@ EXEC = ./build/socketServer
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CXX) $(LDFLAGS) -o $@ $(OBJ) $(LBLIBS) -fpermissive -lpthread
+	$(CXX) $(LDFLAGS) -o $@ $(OBJ) $(LBLIBS) -fpermissive -lpthread inih/ini.c
 
 clean:
 	rm -rf $(EXEC)
