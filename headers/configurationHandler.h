@@ -8,8 +8,24 @@
 
 typedef struct
 {
-    const char* name;
-    int number;
+    const char* adresseIP;
+    int port;
+} systemrules;
+
+typedef struct
+{
+    int nbRound;
+    int roundTime;
+    int bankA;
+    int bankB;
+    int showNbRound;
+    int coopMutuelle;
+} gamerules;
+
+typedef struct
+{
+    systemrules sys;
+    gamerules game;
 } configuration;
 
 
