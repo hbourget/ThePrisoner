@@ -4,10 +4,12 @@ SRC = ./sources/*.c
 OBJ = $(SRC:.cc=.o)
 EXEC = ./build/ThePrisoner_Server
 
+CFLAGS=-DDEBUG
+
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CXX) $(LDFLAGS) -o $@ $(OBJ) $(LBLIBS) -lpthread
+	$(CXX) $(CFLAGS) -o $@ $(OBJ) $(LBLIBS) -lpthread
 
 clean:
 	rm -rf $(EXEC)
