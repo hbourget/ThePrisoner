@@ -94,5 +94,4 @@ void showConfig()
     }
 
     printf("\n --------------------------\nCONFIGURATION SERVEUR\n \n- Adresse IP: %s \n- Port: %d \n- Nombre de tours: %d \n- Temps par tour: %d \n- Solde joueur A: %d \n- Solde joueur B: %d \n- Montrer le nombre de tours: %s \n- Coopération mutuelle: %s \n--------------------------\n", config.sys.adresseIP, config.sys.port, config.game.nbRound, config.game.roundTime, config.game.bankA, config.game.bankB, showNb, coop);
-
 }

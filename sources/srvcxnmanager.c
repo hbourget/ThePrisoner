@@ -12,12 +12,12 @@
 #include "../headers/configurationHandler.h"
 
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
+
 void init_sockets_array() {
     for (int i = 0; i < MAXSIMULTANEOUSCLIENTS; i++) {
         connections[i] = NULL;
     }
 }
-
 void add(connection_t *connection) {
     for (int i = 0; i < MAXSIMULTANEOUSCLIENTS; i++) {
         if (connections[i] == NULL) {
