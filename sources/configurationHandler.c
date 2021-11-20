@@ -67,3 +67,32 @@ configuration getConfig()
 
     return config;
 }
+
+void showConfig()
+{
+    configuration config;
+    config = getConfig();
+    char *showNb = (char*)malloc(sizeof(char));
+    char *coop = (char*)malloc(sizeof(char));
+
+    if(config.game.showNbRound == 1)
+    {
+        showNb = "Oui";
+    }
+    else
+    {
+        showNb = "Non";
+    }
+
+    if(config.game.coopMutuelle == 1)
+    {
+        coop = "50/50";
+    }
+    else
+    {
+        coop = "Proportionnel";
+    }
+
+    printf("\n --------------------------\nCONFIGURATION SERVEUR\n \n- Adresse IP: %s \n- Port: %d \n- Nombre de tours: %d \n- Temps par tour: %d \n- Solde joueur A: %d \n- Solde joueur B: %d \n- Montrer le nombre de tours: %s \n- Coopération mutuelle: %s \n--------------------------\n", config.sys.adresseIP, config.sys.port, config.game.nbRound, config.game.roundTime, config.game.bankA, config.game.bankB, showNb, coop);
+
+}

@@ -33,4 +33,6 @@ static int handler(void* config, const char* section, const char* name, const ch
 
 configuration getConfig();
 
+void showConfig();
+
 #endif //THEPRISONER_SERVER_CONFIGURATIONHANDLER_H
