@@ -6,7 +6,7 @@
 static int handler(void* config, const char* section, const char* name, const char* value)
 {
     // config instance for filling in the values.
-    configuration* pconfig = (configuration*)config;
+    Configuration* pconfig = (Configuration*)config;
 
     // define a macro for checking Sections and keys under the sections.
     #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
@@ -25,17 +25,9 @@ static int handler(void* config, const char* section, const char* name, const ch
     {
         pconfig->m1.nbRound = atoi(value);
     }
-    else if(MATCH("match1", "roundTime"))
-    {
-        pconfig->m1.roundTime = atoi(value);
-    }
     else if(MATCH("match1", "bank"))
     {
         pconfig->m1.bank = atoi(value);
-    }
-    else if(MATCH("match1", "showNbRound"))
-    {
-        pconfig->m1.showNbRound = atoi(value);
     }
     else if(MATCH("match1", "coopMutuelle"))
     {
@@ -55,17 +47,9 @@ static int handler(void* config, const char* section, const char* name, const ch
     {
         pconfig->m2.nbRound = atoi(value);
     }
-    else if(MATCH("match2", "roundTime"))
-    {
-        pconfig->m2.roundTime = atoi(value);
-    }
     else if(MATCH("match2", "bank"))
     {
         pconfig->m2.bank = atoi(value);
-    }
-    else if(MATCH("match2", "showNbRound"))
-    {
-        pconfig->m2.showNbRound = atoi(value);
     }
     else if(MATCH("match2", "coopMutuelle"))
     {
@@ -79,16 +63,15 @@ static int handler(void* config, const char* section, const char* name, const ch
     {
         pconfig->m2.idClient2 = strdup(value);
     }
-
     return 1;
 }
 
-configuration getServerConfig()
+Configuration getServerConfig()
 {
-    configuration config;
+    Configuration config;
     config.sys.serverIP = NULL;
     config.sys.serverPort = 0;
-
+    
     if (ini_parse("../config.ini", handler, &config) < 0) 
     {
         printf("Une erreur est survenue lors de l'ouverture du fichier\n");
@@ -97,17 +80,13 @@ configuration getServerConfig()
     return config;
 }
 
-void showServerConfig()
+void showServerConfig(Configuration config)
 {
-    configuration config;
-    config = getServerConfig();
-
     printf("\n --------------------------\nCONFIGURATION SERVEUR\n \n- Adresse IP: %s \n- Port: %d \n --------------------------\n", config.sys.serverIP, config.sys.serverPort);
 }
 
-void showMatch1Config()
+void showMatch1Config(Configuration config)
 {
-    configuration config = getServerConfig();
     char *coop = (char*)malloc(sizeof(char));
 
     if(config.m1.coopMutuelle == 1)
@@ -119,13 +98,12 @@ void showMatch1Config()
         coop = "Proportionnel";
     }
 
-    printf("\n --------------------------\nCONFIGURATION MATCH 1\n \n- Nombre de tours: %d \n- Temps par tour: %d \n- Banque: %d \n- Coopération mutuelle: %s \n- ID Client #1 : %s \n- ID Client #2 : %s \n--------------------------\n", config.m1.nbRound, config.m1.roundTime, config.m1.bank, coop, config.m1.idClient1, config.m1.idClient2);
+    printf("\n --------------------------\nCONFIGURATION MATCH 1\n \n- Nombre de tours: %d \n- Banque: %d \n- Coopération mutuelle: %s \n- ID Client #1 : %s \n- ID Client #2 : %s \n--------------------------\n", config.m1.nbRound, config.m1.bank, coop, config.m1.idClient1, config.m1.idClient2);
 }
 
 
-void showMatch2Config()
+void showMatch2Config(Configuration config)
 {
-    configuration config = getServerConfig();
     char *coop = (char*)malloc(sizeof(char));
 
     if(config.m2.coopMutuelle == 1)
@@ -137,5 +115,5 @@ void showMatch2Config()
         coop = "Proportionnel";
     }
 
-     printf("\n --------------------------\nCONFIGURATION MATCH 2\n \n- Nombre de tours: %d \n- Temps par tour: %d \n- Banque: %d \n- Coopération mutuelle: %s \n- ID Client #1 : %s \n- ID Client #2 : %s \n--------------------------\n", config.m2.nbRound, config.m2.roundTime, config.m2.bank, coop, config.m2.idClient1, config.m2.idClient2);
+     printf("\n --------------------------\nCONFIGURATION MATCH 2\n \n- Nombre de tours: %d \n- Banque: %d \n- Coopération mutuelle: %s \n- ID Client #1 : %s \n- ID Client #2 : %s \n--------------------------\n", config.m2.nbRound, config.m2.bank, coop, config.m2.idClient1, config.m2.idClient2);
 }

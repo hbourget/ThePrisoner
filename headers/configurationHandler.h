@@ -10,7 +10,7 @@ typedef struct
 {
     const char* serverIP;
     int serverPort;
-} systemrules;
+} SystemRules;
 
 typedef struct
 {
@@ -21,7 +21,7 @@ typedef struct
     int coopMutuelle;
     const char* idClient1;
     const char* idClient2;
-} match1;
+} RoomOne;
 
 typedef struct
 {
@@ -32,20 +32,24 @@ typedef struct
     int coopMutuelle;
     const char* idClient1;
     const char* idClient2;
-} match2;
+} RoomTwo;
 
 typedef struct
 {
-    systemrules sys;
-    match1 m1;
-    match2 m2;
-} configuration;
+    SystemRules sys;
+    RoomOne m1;
+    RoomTwo m2;
+} Configuration;
 
 
 static int handler(void* config, const char* section, const char* name, const char* value);
 
-configuration getServerConfig();
+Configuration getServerConfig();
 
-void showServerConfig();
+void showServerConfig(Configuration config);
+
+void showMatch1Config(Configuration config);
+
+void showMatch2Config(Configuration config);
 
 #endif //THEPRISONER_SERVER_CONFIGURATIONHANDLER_H

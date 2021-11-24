@@ -9,6 +9,7 @@
  * Author: aurelio
  *
  */
+#include "configurationHandler.h"
 
 #ifndef SRVCXNMANAGER_H
 #define SRVCXNMANAGER_H
@@ -28,6 +29,6 @@ void init_sockets_array();
 void add(connection_t *connection);
 void del(connection_t *connection);
 void *threadProcess(void *ptr);
-int create_server_socket() ;
+int create_server_socket(Configuration config) ;
 
 #endif /* SRVCXNMANAGER_H */

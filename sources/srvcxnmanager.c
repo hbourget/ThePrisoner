@@ -68,12 +68,13 @@ void *threadProcess(void *ptr) {
     sprintf(buffer_out, "Welcome #%i\n", connection->index);
     write(connection->sockfd, buffer_out, strlen(buffer_out));
 
-    while ((len = read(connection->sockfd, buffer_in, BUFFERSIZE)) > 0) {
+    len = read(connection->sockfd, buffer_in, BUFFERSIZE);
+    printf("Client #%s, is the client number %i to connect.\n", buffer_in, connection->index);
 
+    while ((len = read(connection->sockfd, buffer_in, BUFFERSIZE)) > 0) {
         if (strncmp(buffer_in, "bye", 3) == 0) {
             break;
         }
-        printf("Client #%s, is the client number %i to connect.\n", buffer_in, connection->index);
 #if DEBUG
         printf("DEBUG-----------------------------------------------------------\n");
         printf("len : %i\n", len);
@@ -96,7 +97,7 @@ void *threadProcess(void *ptr) {
                 if (client == connections[i]->index) {
                     write(connections[i]->sockfd, buffer_out, strlen(buffer_out));
                     break;
-                } //no client found ? : we dont care !!
+                }
             }
         } else {
             write(connection->sockfd, buffer_out, strlen(buffer_out));
@@ -113,8 +114,7 @@ void *threadProcess(void *ptr) {
 
 }
 
-int create_server_socket() {
-    configuration config = getServerConfig();
+int create_server_socket(Configuration config) {
     int sockfd = -1;
     struct sockaddr_in address;
     int port = config.sys.serverPort;
