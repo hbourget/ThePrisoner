@@ -31,8 +31,8 @@ typedef struct
 
 static int handler(void* config, const char* section, const char* name, const char* value);
 
-configuration getConfig();
+configuration getServerConfig();
 
-void showConfig();
+void showServerConfig();
 
 #endif //THEPRISONER_SERVER_CONFIGURATIONHANDLER_H

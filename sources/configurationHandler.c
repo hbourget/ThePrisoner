@@ -48,7 +48,7 @@ static int handler(void* config, const char* section, const char* name, const ch
     return 1;
 }
 
-configuration getConfig()
+configuration getServerConfig()
 {
     configuration config;
     config.sys.adresseIP = NULL;
@@ -68,10 +68,10 @@ configuration getConfig()
     return config;
 }
 
-void showConfig()
+void showServerConfig()
 {
     configuration config;
-    config = getConfig();
+    config = getServerConfig();
     char *showNb = (char*)malloc(sizeof(char));
     char *coop = (char*)malloc(sizeof(char));
 

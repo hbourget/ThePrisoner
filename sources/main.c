@@ -26,8 +26,8 @@
 
 int main(int argc, char** argv) 
 {
-    showConfig();
-    
+    showServerConfig();
+
     int sockfd = -1;
     int index = 1;
     connection_t *connection;
