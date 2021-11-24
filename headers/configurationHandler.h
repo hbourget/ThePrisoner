@@ -16,16 +16,29 @@ typedef struct
 {
     int nbRound;
     int roundTime;
-    int bankA;
-    int bankB;
+    int bank;
     int showNbRound;
     int coopMutuelle;
-} gamerules;
+    const char* idClient1;
+    const char* idClient2;
+} match1;
+
+typedef struct
+{
+    int nbRound;
+    int roundTime;
+    int bank;
+    int showNbRound;
+    int coopMutuelle;
+    const char* idClient1;
+    const char* idClient2;
+} match2;
 
 typedef struct
 {
     systemrules sys;
-    gamerules game;
+    match1 m1;
+    match2 m2;
 } configuration;
 
 

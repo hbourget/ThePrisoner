@@ -64,7 +64,7 @@ void *threadProcess(void *ptr) {
     add(connection);
 
     //Welcome the new client
-    printf("Welcome #%i\n", connection->index);
+    //printf("Welcome #%i\n", connection->index);
     sprintf(buffer_out, "Welcome #%i\n", connection->index);
     write(connection->sockfd, buffer_out, strlen(buffer_out));
 
@@ -73,6 +73,7 @@ void *threadProcess(void *ptr) {
         if (strncmp(buffer_in, "bye", 3) == 0) {
             break;
         }
+        printf("Client #%s, is the client number %i to connect.\n", buffer_in, connection->index);
 #if DEBUG
         printf("DEBUG-----------------------------------------------------------\n");
         printf("len : %i\n", len);

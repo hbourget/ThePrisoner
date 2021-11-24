@@ -27,6 +27,8 @@
 int main(int argc, char** argv) 
 {
     showServerConfig();
+    showMatch1Config();
+    showMatch2Config();
 
     int sockfd = -1;
     int index = 1;

@@ -11,7 +11,7 @@ static int handler(void* config, const char* section, const char* name, const ch
     // define a macro for checking Sections and keys under the sections.
     #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
 
-    // fill the values in config struct for Section 1.
+    //Server
     if(MATCH("systemrules", "serverIP"))
     {
         pconfig->sys.serverIP = strdup(value);
@@ -20,29 +20,64 @@ static int handler(void* config, const char* section, const char* name, const ch
     {
         pconfig->sys.serverPort = atoi(value);
     }
-    else if(MATCH("gamerules", "nbRound"))
+    //Match 1
+    else if(MATCH("match1", "nbRound"))
     {
-        pconfig->game.nbRound = atoi(value);
+        pconfig->m1.nbRound = atoi(value);
     }
-    else if(MATCH("gamerules", "roundTime"))
+    else if(MATCH("match1", "roundTime"))
     {
-        pconfig->game.roundTime = atoi(value);
+        pconfig->m1.roundTime = atoi(value);
     }
-    else if(MATCH("gamerules", "bankA"))
+    else if(MATCH("match1", "bank"))
     {
-        pconfig->game.bankA = atoi(value);
+        pconfig->m1.bank = atoi(value);
     }
-    else if(MATCH("gamerules", "bankB"))
+    else if(MATCH("match1", "showNbRound"))
     {
-        pconfig->game.bankB = atoi(value);
+        pconfig->m1.showNbRound = atoi(value);
     }
-    else if(MATCH("gamerules", "showNbRound"))
+    else if(MATCH("match1", "coopMutuelle"))
     {
-        pconfig->game.showNbRound = atoi(value);
+        pconfig->m1.coopMutuelle = atoi(value);
     }
-    else if(MATCH("gamerules", "coopMutuelle"))
+    else if(MATCH("match1", "idClient1"))
     {
-        pconfig->game.coopMutuelle = atoi(value);
+        pconfig->m1.idClient1 = strdup(value);
+    }
+    else if(MATCH("match1", "idClient2"))
+    {
+        pconfig->m1.idClient2 = strdup(value);
+    }
+
+    //Match 2
+    else if(MATCH("match2", "nbRound"))
+    {
+        pconfig->m2.nbRound = atoi(value);
+    }
+    else if(MATCH("match2", "roundTime"))
+    {
+        pconfig->m2.roundTime = atoi(value);
+    }
+    else if(MATCH("match2", "bank"))
+    {
+        pconfig->m2.bank = atoi(value);
+    }
+    else if(MATCH("match2", "showNbRound"))
+    {
+        pconfig->m2.showNbRound = atoi(value);
+    }
+    else if(MATCH("match2", "coopMutuelle"))
+    {
+        pconfig->m2.coopMutuelle = atoi(value);
+    }
+    else if(MATCH("match2", "idClient1"))
+    {
+        pconfig->m2.idClient1 = strdup(value);
+    }
+    else if(MATCH("match2", "idClient2"))
+    {
+        pconfig->m2.idClient2 = strdup(value);
     }
 
     return 1;
@@ -52,13 +87,7 @@ configuration getServerConfig()
 {
     configuration config;
     config.sys.serverIP = NULL;
-    config.sys.serverPort = 20;
-    config.game.nbRound = 0;
-    config.game.roundTime = 0;
-    config.game.bankA = 0;
-    config.game.bankB = 0;
-    config.game.showNbRound = 0;
-    config.game.coopMutuelle = 0;
+    config.sys.serverPort = 0;
 
     if (ini_parse("../config.ini", handler, &config) < 0) 
     {
@@ -72,19 +101,16 @@ void showServerConfig()
 {
     configuration config;
     config = getServerConfig();
-    char *showNb = (char*)malloc(sizeof(char));
+
+    printf("\n --------------------------\nCONFIGURATION SERVEUR\n \n- Adresse IP: %s \n- Port: %d \n --------------------------\n", config.sys.serverIP, config.sys.serverPort);
+}
+
+void showMatch1Config()
+{
+    configuration config = getServerConfig();
     char *coop = (char*)malloc(sizeof(char));
 
-    if(config.game.showNbRound == 1)
-    {
-        showNb = "Oui";
-    }
-    else
-    {
-        showNb = "Non";
-    }
-
-    if(config.game.coopMutuelle == 1)
+    if(config.m1.coopMutuelle == 1)
     {
         coop = "50/50";
     }
@@ -93,5 +119,23 @@ void showServerConfig()
         coop = "Proportionnel";
     }
 
-    printf("\n --------------------------\nCONFIGURATION SERVEUR\n \n- Adresse IP: %s \n- Port: %d \n- Nombre de tours: %d \n- Temps par tour: %d \n- Solde joueur A: %d \n- Solde joueur B: %d \n- Montrer le nombre de tours: %s \n- Coopération mutuelle: %s \n--------------------------\n", config.sys.serverIP, config.sys.serverPort, config.game.nbRound, config.game.roundTime, config.game.bankA, config.game.bankB, showNb, coop);
+    printf("\n --------------------------\nCONFIGURATION MATCH 1\n \n- Nombre de tours: %d \n- Temps par tour: %d \n- Banque: %d \n- Coopération mutuelle: %s \n- ID Client #1 : %s \n- ID Client #2 : %s \n--------------------------\n", config.m1.nbRound, config.m1.roundTime, config.m1.bank, coop, config.m1.idClient1, config.m1.idClient2);
+}
+
+
+void showMatch2Config()
+{
+    configuration config = getServerConfig();
+    char *coop = (char*)malloc(sizeof(char));
+
+    if(config.m2.coopMutuelle == 1)
+    {
+        coop = "50/50";
+    }
+    else
+    {
+        coop = "Proportionnel";
+    }
+
+     printf("\n --------------------------\nCONFIGURATION MATCH 2\n \n- Nombre de tours: %d \n- Temps par tour: %d \n- Banque: %d \n- Coopération mutuelle: %s \n- ID Client #1 : %s \n- ID Client #2 : %s \n--------------------------\n", config.m2.nbRound, config.m2.roundTime, config.m2.bank, coop, config.m2.idClient1, config.m2.idClient2);
 }
