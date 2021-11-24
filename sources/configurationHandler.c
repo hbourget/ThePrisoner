@@ -12,13 +12,13 @@ static int handler(void* config, const char* section, const char* name, const ch
     #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
 
     // fill the values in config struct for Section 1.
-    if(MATCH("systemrules", "adresseIP"))
+    if(MATCH("systemrules", "serverIP"))
     {
-        pconfig->sys.adresseIP = strdup(value);
+        pconfig->sys.serverIP = strdup(value);
     }
-    else if(MATCH("systemrules", "port"))
+    else if(MATCH("systemrules", "serverPort"))
     {
-        pconfig->sys.port = atoi(value);
+        pconfig->sys.serverPort = atoi(value);
     }
     else if(MATCH("gamerules", "nbRound"))
     {
@@ -51,8 +51,8 @@ static int handler(void* config, const char* section, const char* name, const ch
 configuration getServerConfig()
 {
     configuration config;
-    config.sys.adresseIP = NULL;
-    config.sys.port = 20;
+    config.sys.serverIP = NULL;
+    config.sys.serverPort = 20;
     config.game.nbRound = 0;
     config.game.roundTime = 0;
     config.game.bankA = 0;
@@ -93,5 +93,5 @@ void showServerConfig()
         coop = "Proportionnel";
     }
 
-    printf("\n --------------------------\nCONFIGURATION SERVEUR\n \n- Adresse IP: %s \n- Port: %d \n- Nombre de tours: %d \n- Temps par tour: %d \n- Solde joueur A: %d \n- Solde joueur B: %d \n- Montrer le nombre de tours: %s \n- Coopération mutuelle: %s \n--------------------------\n", config.sys.adresseIP, config.sys.port, config.game.nbRound, config.game.roundTime, config.game.bankA, config.game.bankB, showNb, coop);
+    printf("\n --------------------------\nCONFIGURATION SERVEUR\n \n- Adresse IP: %s \n- Port: %d \n- Nombre de tours: %d \n- Temps par tour: %d \n- Solde joueur A: %d \n- Solde joueur B: %d \n- Montrer le nombre de tours: %s \n- Coopération mutuelle: %s \n--------------------------\n", config.sys.serverIP, config.sys.serverPort, config.game.nbRound, config.game.roundTime, config.game.bankA, config.game.bankB, showNb, coop);
 }

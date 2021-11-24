@@ -113,9 +113,10 @@ void *threadProcess(void *ptr) {
 }
 
 int create_server_socket() {
+    configuration config = getServerConfig();
     int sockfd = -1;
     struct sockaddr_in address;
-    int port = 7799;
+    int port = config.sys.serverPort;
 
     /* create socket */
     sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -131,7 +132,7 @@ int create_server_socket() {
     //address.sin_addr.s_addr = INADDR_ANY;
     //ou 0.0.0.0 
     //Sinon  127.0.0.1
-    address.sin_addr.s_addr = inet_addr("0.0.0.0");
+    address.sin_addr.s_addr = inet_addr(config.sys.serverIP);
     address.sin_port = htons(port);
 
     /* prevent the 60 secs timeout */

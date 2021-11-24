@@ -8,8 +8,8 @@
 
 typedef struct
 {
-    const char* adresseIP;
-    int port;
+    const char* serverIP;
+    int serverPort;
 } systemrules;
 
 typedef struct
