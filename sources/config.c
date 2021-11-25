@@ -25,33 +25,32 @@ ServerConfig initCfg()
   cfgServer.serverIP = serverIP;
   cfgServer.serverPort = serverPort;
 
-  config_setting_t *boxesSettings = config_lookup(&cfg, "boxes");
-  int nbBoxes = config_setting_length(boxesSettings);
+  config_setting_t *roomsSettings = config_lookup(&cfg, "rooms");
+  int nbRooms = config_setting_length(roomsSettings);
     
-  cfgServer.gameConfig.nbBoxes = nbBoxes;
+  cfgServer.gameConfig.nbRooms = nbRooms;
   
-  for(int i = 0; i < nbBoxes; ++i)
+  for(int i = 0; i < nbRooms; ++i)
   {
-    Box theBox;
-    config_setting_t *box = config_setting_get_elem(boxesSettings, i);
+    Room theRoom;
+    config_setting_t *room = config_setting_get_elem(roomsSettings, i);
 
     const char *name;
     int bank, nbRounds, idClient_1, idClient_2;
 
-    config_setting_lookup_string(box, "name", &name) ;
-    config_setting_lookup_int(box, "bank", &bank);
-    config_setting_lookup_int(box, "nbRounds", &nbRounds);
-    config_setting_lookup_int(box, "idClient_1", &idClient_1);
-    config_setting_lookup_int(box, "idClient_2", &idClient_2);
+    config_setting_lookup_string(room, "name", &name) ;
+    config_setting_lookup_int(room, "bank", &bank);
+    config_setting_lookup_int(room, "nbRounds", &nbRounds);
+    config_setting_lookup_int(room, "idClient_1", &idClient_1);
+    config_setting_lookup_int(room, "idClient_2", &idClient_2);
 
-    theBox.name = name;
-    theBox.bank = bank;
-    theBox.nbRounds = nbRounds;
-    theBox.idClient_1 = idClient_1;
-    theBox.idClient_2 = idClient_2;
-    theBox.index = i;
+    theRoom.name = name;
+    theRoom.bank = bank;
+    theRoom.nbRounds = nbRounds;
+    theRoom.idClient_1 = idClient_1;
+    theRoom.idClient_2 = idClient_2;
 
-    cfgServer.gameConfig.boxes[i] = theBox;
+    cfgServer.gameConfig.rooms[i] = theRoom;
   }
   return cfgServer;
 }
@@ -62,12 +61,12 @@ void showConfig(ServerConfig cfgServer)
     printf("\n\033[0;36m--------------------------\n\033[1;36m SERVER CONFIGURATION\n \n\033[1;37m - IP Address: \033[0;36m%s \n\033[1;37m - Port: \033[0;36m%d \n\033[0;36m--------------------------\n", cfgServer.serverIP, cfgServer.serverPort);
 }
 
-void showBoxes(ServerConfig cfgServer)
+void showRooms(ServerConfig cfgServer)
 {
-    printf("\n\033[0;36m--------------------------\n\033[1;36m BOXES CONFIGURATION\n");
-    for(int i = 0; i < cfgServer.gameConfig.nbBoxes; ++i)
+    printf("\n\033[0;36m--------------------------\n\033[1;36m ROOMS CONFIGURATION\n");
+    for(int i = 0; i < cfgServer.gameConfig.nbRooms; ++i)
     {
-      printf("\n \033[1;37m- Box name: \033[0;36m%s  \033[1;37mBank: \033[0;36m%d  \033[1;37mNumber of rounds: \033[0;36m%d  \033[1;37mClient #1 ID: \033[0;36m%d  \033[1;37mClient #2 ID: \033[0;36m%d\n", cfgServer.gameConfig.boxes[i].name, cfgServer.gameConfig.boxes[i].bank, cfgServer.gameConfig.boxes[i].nbRounds, cfgServer.gameConfig.boxes[i].idClient_1, cfgServer.gameConfig.boxes[i].idClient_2);
+      printf("\n \033[1;37m- Room name: \033[0;36m%s  \033[1;37mBank: \033[0;36m%d  \033[1;37mNumber of rounds: \033[0;36m%d  \033[1;37mClient #1 ID: \033[0;36m%d  \033[1;37mClient #2 ID: \033[0;36m%d\n", cfgServer.gameConfig.rooms[i].name, cfgServer.gameConfig.rooms[i].bank, cfgServer.gameConfig.rooms[i].nbRounds, cfgServer.gameConfig.rooms[i].idClient_1, cfgServer.gameConfig.rooms[i].idClient_2);
     }
     printf("\n\033[0;36m--------------------------\n");
 }

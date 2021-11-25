@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     ServerConfig cfgServer = initCfg();
 
     showConfig(cfgServer);
-    showBoxes(cfgServer);
+    showRooms(cfgServer);
 
     int sockfd = -1;
     int index = 1;

@@ -9,12 +9,11 @@ typedef struct {
     int bank;
     int idClient_1;
     int idClient_2;
-    int index;
-} Box;
+} Room;
 
 typedef struct {
-    Box boxes[50];
-    int nbBoxes;
+    Room rooms[50];
+    int nbRooms;
 } GameConfig;
 
 typedef struct {
@@ -25,6 +24,6 @@ typedef struct {
 
 ServerConfig initCfg();
 void showConfig(ServerConfig cfgServer);
-void showBoxes(ServerConfig cfgServer);
+void showRooms(ServerConfig cfgServer);
 
 #endif /* THEPRISONER_SERVER_CONFIG_H */
