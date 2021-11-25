@@ -22,14 +22,14 @@
 #include <stdbool.h>
 
 #include "../headers/srvcxnmanager.h"
-#include "../headers/configurationHandler.h"
+#include "../headers/config.h"
 
 int main(int argc, char** argv) 
 {
-    Configuration config = getServerConfig();
-    showServerConfig(config);
-    showMatch1Config(config);
-    showMatch2Config(config);
+    ServerConfig cfgServer = initCfg();
+
+    showConfig(cfgServer);
+    showBoxes(cfgServer);
 
     int sockfd = -1;
     int index = 1;
@@ -39,15 +39,15 @@ int main(int argc, char** argv)
     /* init array*/
     init_sockets_array();
     /* create socket */
-    sockfd = create_server_socket(config);
+    sockfd = create_server_socket(cfgServer);
 
     /* listen on port , stack size 50 for incoming connections*/
     if (listen(sockfd, 50) < 0) {
-        fprintf(stderr, "%s: error: cannot listen on port\n", argv[0]);
+        fprintf(stderr, "\033[0;31m %s: Error: cannot listen on port\033[0m\n", argv[0]);
         return -5;
     }
 
-    printf("ready and listening\n");
+    printf("\033[0;32m\n --> Server is ready and listening.\033[0m\n");
 
     //Wait for connection
     while (true) {

@@ -7,9 +7,9 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <libconfig.h>
 
 #include "../headers/srvcxnmanager.h"
-#include "../headers/configurationHandler.h"
 
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
 
@@ -69,19 +69,19 @@ void *threadProcess(void *ptr) {
     write(connection->sockfd, buffer_out, strlen(buffer_out));
 
     len = read(connection->sockfd, buffer_in, BUFFERSIZE);
-    printf("Client #%s, is the client number %i to connect.\n", buffer_in, connection->index);
+    printf("Client \033[0;36m#%s\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", buffer_in, connection->index);
 
     while ((len = read(connection->sockfd, buffer_in, BUFFERSIZE)) > 0) {
         if (strncmp(buffer_in, "bye", 3) == 0) {
             break;
         }
 #if DEBUG
-        printf("DEBUG-----------------------------------------------------------\n");
-        printf("len : %i\n", len);
-        printf("Buffer : %.*s\n", len, buffer_in);
-        printf("----------------------------------------------------------------\n");
+        printf("\033[1;32m----------------------------DEBUG----------------------------\033[0m\n");
+        printf("\033[1;37mLen : \033[0;32m%i\033[0m\n", len);
+        printf("\033[1;37mBuffer : \033[0;32m%.*s\033[0m", len, buffer_in);
+        printf("\033[1;32m-------------------------------------------------------------\033[0m\n");
 #endif
-        strcpy(buffer_out, "\nServer Echo : ");
+        strcpy(buffer_out, "\n\033[1;37mServer Echo : \033[0m");
         strncat(buffer_out, buffer_in, len);
 
         if (buffer_in[0] == '@') {
@@ -106,7 +106,7 @@ void *threadProcess(void *ptr) {
         //clear input buffer
         memset(buffer_in, '\0', BUFFERSIZE);
     }
-    printf("Connection to client %i ended \n", connection->index);
+    printf("Connection to client \033[0;36m#%i\033[0m has ended.\n", connection->index);
     close(connection->sockfd);
     del(connection);
     free(connection);
@@ -114,15 +114,14 @@ void *threadProcess(void *ptr) {
 
 }
 
-int create_server_socket(Configuration config) {
+int create_server_socket(ServerConfig cfgServer) {
     int sockfd = -1;
     struct sockaddr_in address;
-    int port = config.sys.serverPort;
 
     /* create socket */
     sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sockfd <= 0) {
-        fprintf(stderr, "%s: error: cannot create socket\n");
+        fprintf(stderr, "\033[0;31m %s: Error: cannot create socket\033[0m\n");
         return -3;
     }
 
@@ -133,8 +132,9 @@ int create_server_socket(Configuration config) {
     //address.sin_addr.s_addr = INADDR_ANY;
     //ou 0.0.0.0 
     //Sinon  127.0.0.1
-    address.sin_addr.s_addr = inet_addr(config.sys.serverIP);
-    address.sin_port = htons(port);
+
+    address.sin_addr.s_addr = inet_addr(cfgServer.serverIP);
+    address.sin_port = htons(cfgServer.serverPort);
 
     /* prevent the 60 secs timeout */
     int reuse = 1;
@@ -142,7 +142,7 @@ int create_server_socket(Configuration config) {
 
     /* bind */
     if (bind(sockfd, (struct sockaddr *) &address, sizeof (struct sockaddr_in)) < 0) {
-        fprintf(stderr, "error: cannot bind socket to port %d\n", port);
+        fprintf(stderr, "\033[0;31mError: cannot bind socket to port %d\033[0m\n", cfgServer.serverPort);
         return -4;
     }
 
