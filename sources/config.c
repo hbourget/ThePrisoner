@@ -35,14 +35,14 @@ ServerConfig initCfg()
     Room theRoom;
     config_setting_t *room = config_setting_get_elem(roomsSettings, i);
 
-    const char *name;
-    int bank, nbRounds, idClient_1, idClient_2;
+    const char *name, *idClient_1, *idClient_2;
+    int bank, nbRounds;
 
     config_setting_lookup_string(room, "name", &name) ;
     config_setting_lookup_int(room, "bank", &bank);
     config_setting_lookup_int(room, "nbRounds", &nbRounds);
-    config_setting_lookup_int(room, "idClient_1", &idClient_1);
-    config_setting_lookup_int(room, "idClient_2", &idClient_2);
+    config_setting_lookup_string(room, "idClient_1", &idClient_1);
+    config_setting_lookup_string(room, "idClient_2", &idClient_2);
 
     theRoom.name = name;
     theRoom.bank = bank;

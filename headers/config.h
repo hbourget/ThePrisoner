@@ -7,8 +7,8 @@ typedef struct {
     const char *name;
     int nbRounds;
     int bank;
-    int idClient_1;
-    int idClient_2;
+    const char *idClient_1;
+    const char *idClient_2;
 } Room;
 
 typedef struct {
@@ -25,5 +25,4 @@ typedef struct {
 ServerConfig initCfg();
 void showConfig(ServerConfig cfgServer);
 void showRooms(ServerConfig cfgServer);
-
 #endif /* THEPRISONER_SERVER_CONFIG_H */

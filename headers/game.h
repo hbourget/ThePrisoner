@@ -12,10 +12,12 @@ typedef struct {
     int currentR;
     int totalR;
     enum actions action;
-} PlayerGameSetting;
+} PlayerGameSettings;
 
-PlayerGameSetting *getGameSettings();
+PlayerGameSettings *getGameSettings();
 
-void calculateBalance(PlayerGameSetting *p1_gameSettings, PlayerGameSetting *p2_gameSettings);
+void calculateBalance(PlayerGameSettings *p1_gameSettings, PlayerGameSettings *p2_gameSettings);
+
+bool nextround(PlayerGameSettings *p1_gameSettings, PlayerGameSettings *p2_gameSettings);
 
 #endif /* GAME.H */
