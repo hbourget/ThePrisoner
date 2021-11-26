@@ -49,7 +49,6 @@ ServerConfig initCfg()
     theRoom.nbRounds = nbRounds;
     theRoom.idClient_1 = idClient_1;
     theRoom.idClient_2 = idClient_2;
-
     cfgServer.gameConfig.rooms[i] = theRoom;
   }
   return cfgServer;
@@ -66,7 +65,7 @@ void showRooms(ServerConfig cfgServer)
     printf("\n\033[0;36m--------------------------\n\033[1;36m ROOMS CONFIGURATION\n");
     for(int i = 0; i < cfgServer.gameConfig.nbRooms; ++i)
     {
-      printf("\n \033[1;37m- Room name: \033[0;36m%s  \033[1;37mBank: \033[0;36m%d  \033[1;37mNumber of rounds: \033[0;36m%d  \033[1;37mClient #1 ID: \033[0;36m%d  \033[1;37mClient #2 ID: \033[0;36m%d\n", cfgServer.gameConfig.rooms[i].name, cfgServer.gameConfig.rooms[i].bank, cfgServer.gameConfig.rooms[i].nbRounds, cfgServer.gameConfig.rooms[i].idClient_1, cfgServer.gameConfig.rooms[i].idClient_2);
+      printf("\n \033[1;37m- Room name: \033[0;36m%s  \033[1;37mBank: \033[0;36m%d  \033[1;37mNumber of rounds: \033[0;36m%d  \033[1;37mClient #1 ID: \033[0;36m%s  \033[1;37mClient #2 ID: \033[0;36m%s\n", cfgServer.gameConfig.rooms[i].name, cfgServer.gameConfig.rooms[i].bank, cfgServer.gameConfig.rooms[i].nbRounds, cfgServer.gameConfig.rooms[i].idClient_1, cfgServer.gameConfig.rooms[i].idClient_2);
     }
     printf("\n\033[0;36m--------------------------\n");
 }

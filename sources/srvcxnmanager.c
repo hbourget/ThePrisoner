@@ -51,7 +51,6 @@ void *threadProcess(void *ptr)
     ServerConfig cfgServer = initCfg();
     char buffer_in[BUFFERSIZE];
     char buffer_out[BUFFERSIZE];
-
     int len;
     connection_t *connection;
 
@@ -61,15 +60,17 @@ void *threadProcess(void *ptr)
 
     add(connection);
 
-    sprintf(buffer_out, "Welcome #%i\n", connection->index);
-    write(connection->sockfd, buffer_out, strlen(buffer_out));
+    /*sprintf(buffer_out, "Welcome #%i\n", connection->index);
+    write(connection->sockfd, buffer_out, strlen(buffer_out));*/
 
     len = read(connection->sockfd, buffer_in, BUFFERSIZE);
+    char *str = malloc(sizeof(strlen(buffer_in)));
+
     for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++)
     {
-        printf("%s",buffer_in);
-        printf("%d",strcmp(buffer_in, cfgServer.gameConfig.rooms[i].idClient_1));
-        if(1 == 1)
+        memset(str, 0, strlen(buffer_in));
+        strcat(str, buffer_in);
+        if(strcmp(str, cfgServer.gameConfig.rooms[i].idClient_1) == 0)
         {
             const char *roomName = cfgServer.gameConfig.rooms[i].name;
             char mess[2048] = "You are in room: ";
