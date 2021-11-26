@@ -74,7 +74,7 @@ void *threadProcess(void *ptr)
     {
         memset(str, 0, strlen(buffer_in));
         strcat(str, buffer_in);
-        //Verifi si le joueur qui vient de se connecter est bien attribué à une room.
+        //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
         if(strcmp(str, cfgServer.gameConfig.rooms[i].idClient_1) == 0 || strcmp(str, cfgServer.gameConfig.rooms[i].idClient_2) == 0)
         {
             const char *roomName = cfgServer.gameConfig.rooms[i].name;
