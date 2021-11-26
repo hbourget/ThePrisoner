@@ -11,6 +11,7 @@
 
 #include "../headers/srvcxnmanager.h"
 #include "../headers/config.h"
+#include "../headers/game.h"
 
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
 
@@ -53,6 +54,7 @@ void *threadProcess(void *ptr)
     char buffer_out[BUFFERSIZE];
     int len;
     connection_t *connection;
+    PlayerGameSettings *playerGameConfig;
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
@@ -66,19 +68,34 @@ void *threadProcess(void *ptr)
     len = read(connection->sockfd, buffer_in, BUFFERSIZE);
     char *str = malloc(sizeof(strlen(buffer_in)));
 
+
+
     for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++)
     {
         memset(str, 0, strlen(buffer_in));
         strcat(str, buffer_in);
-        if(strcmp(str, cfgServer.gameConfig.rooms[i].idClient_1) == 0)
+        //Verifi si le joueur qui vient de se connecter est bien attribué à une room.
+        if(strcmp(str, cfgServer.gameConfig.rooms[i].idClient_1) == 0 || strcmp(str, cfgServer.gameConfig.rooms[i].idClient_2) == 0)
         {
             const char *roomName = cfgServer.gameConfig.rooms[i].name;
             char mess[2048] = "You are in room: ";
             strcat(mess, roomName);
             strcpy(buffer_out, mess);
             write(connection->sockfd, buffer_out, strlen(buffer_out));
+
+            //On creer alors un playerGameConfig qui lui est propre.
+            playerGameConfig = initPlayerGameSettings(cfgServer, i);
+
+            char *bal = malloc(sizeof(char));
+            sprintf(bal,"%d", playerGameConfig->balance);
+            char mess2[2048] = "\nYour balance is: ";
+            strcat(mess2, bal);
+            strcpy(buffer_out, mess2);
+            write(connection->sockfd, buffer_out, strlen(buffer_out));
         }
     }
+
+
 
     printf("Client \033[0;36m#%s\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", buffer_in, connection->index);
 

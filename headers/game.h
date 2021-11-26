@@ -1,3 +1,5 @@
+#include <stdbool.h>
+#include "config.h"
 #ifndef GAME_H
 #define GAME_H 
 
@@ -14,7 +16,7 @@ typedef struct {
     enum actions action;
 } PlayerGameSettings;
 
-PlayerGameSettings *getGameSettings();
+PlayerGameSettings * initPlayerGameSettings(ServerConfig cfgServer, int roomID);
 
 void calculateBalance(PlayerGameSettings *p1_gameSettings, PlayerGameSettings *p2_gameSettings);
 

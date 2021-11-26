@@ -6,7 +6,7 @@
 #include "../headers/game.h"
 #include "../headers/config.h"
 
-PlayerGameSettings * init(ServerConfig cfgServer, int roomID)
+PlayerGameSettings * initPlayerGameSettings(ServerConfig cfgServer, int roomID)
 {
     PlayerGameSettings *gameSettings;
 
