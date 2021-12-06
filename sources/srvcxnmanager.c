@@ -51,8 +51,8 @@ void *threadProcess(void *ptr) {
 
     /* Remplissage de la struct (test - à virer ensuite)*/
     PlayerGameSettings configuration;
-    configuration.balance = 566;
-    configuration.totalR = 7;
+    /*configuration.balance = 566;
+    configuration.totalR = 7;*/
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
@@ -61,21 +61,18 @@ void *threadProcess(void *ptr) {
     add(connection);
 
     char *str = malloc(sizeof(strlen(buffer_in)));
+    len = read(connection->sockfd, buffer_in, BUFFERSIZE);
 
     for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
         memset(str, 0, strlen(buffer_in));
         strcat(str, buffer_in);
+
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
         if(strcmp(str, cfgServer.gameConfig.rooms[i].idClient_1) == 0 || strcmp(str, cfgServer.gameConfig.rooms[i].idClient_2) == 0) {
-            // TODO /* Correction du if à faire */
-        }
-        while (true){
+            configuration = initPlayerGameSettings(cfgServer, i);
             send(connection->sockfd, &configuration, sizeof(configuration), 0);
-            break;
         }
     }
-
-    printf("Client \033[0;36m#%s\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", buffer_in, connection->index);
 
     while ((len = read(connection->sockfd, buffer_in, BUFFERSIZE)) > 0) {
         if (strncmp(buffer_in, "bye", 3) == 0) {

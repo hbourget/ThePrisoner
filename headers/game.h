@@ -13,10 +13,10 @@ typedef struct {
     enum actions action;
 } PlayerGameSettings;
 
-PlayerGameSettings * initPlayerGameSettings(ServerConfig cfgServer, int roomID);
+PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID);
 
-void calculateBalance(PlayerGameSettings *p1_gameSettings, PlayerGameSettings *p2_gameSettings);
+void calculateBalance(PlayerGameSettings p1_gameSettings, PlayerGameSettings p2_gameSettings);
 
-bool nextround(PlayerGameSettings *p1_gameSettings, PlayerGameSettings *p2_gameSettings);
+bool nextround(PlayerGameSettings p1_gameSettings, PlayerGameSettings p2_gameSettings);
 
 #endif /* GAME.H */
