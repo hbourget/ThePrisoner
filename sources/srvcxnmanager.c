@@ -42,19 +42,17 @@ void del(connection_t *connection) {
     exit(-5);
 }
 
-/**
- * Thread allowing server to handle multiple client connections
- * @param ptr connection_t 
- * @return 
- */
-void *threadProcess(void *ptr) 
-{
+void *threadProcess(void *ptr) {
     ServerConfig cfgServer = initCfg();
     char buffer_in[BUFFERSIZE];
     char buffer_out[BUFFERSIZE];
     int len;
     connection_t *connection;
-    PlayerGameSettings *playerGameConfig;
+
+    /* Remplissage de la struct (test - à virer ensuite)*/
+    PlayerGameSettings configuration;
+    configuration.balance = 566;
+    configuration.totalR = 7;
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
@@ -62,55 +60,27 @@ void *threadProcess(void *ptr)
 
     add(connection);
 
-    /*sprintf(buffer_out, "Welcome #%i\n", connection->index);
-    write(connection->sockfd, buffer_out, strlen(buffer_out));*/
-
-    len = read(connection->sockfd, buffer_in, BUFFERSIZE);
     char *str = malloc(sizeof(strlen(buffer_in)));
 
-
-
-    for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++)
-    {
+    for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
         memset(str, 0, strlen(buffer_in));
         strcat(str, buffer_in);
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
-        if(strcmp(str, cfgServer.gameConfig.rooms[i].idClient_1) == 0 || strcmp(str, cfgServer.gameConfig.rooms[i].idClient_2) == 0)
-        {
-            const char *roomName = cfgServer.gameConfig.rooms[i].name;
-            char mess[2048] = "You are in room: ";
-            strcat(mess, roomName);
-            strcpy(buffer_out, mess);
-            write(connection->sockfd, buffer_out, strlen(buffer_out));
-
-            //On creer alors un playerGameConfig qui lui est propre.
-            playerGameConfig = initPlayerGameSettings(cfgServer, i);
-
-            char *bal = malloc(sizeof(char));
-            sprintf(bal,"%d", playerGameConfig->balance);
-            char mess2[2048] = "\nYour balance is: ";
-            strcat(mess2, bal);
-            strcpy(buffer_out, mess2);
-            write(connection->sockfd, buffer_out, strlen(buffer_out));
+        if(strcmp(str, cfgServer.gameConfig.rooms[i].idClient_1) == 0 || strcmp(str, cfgServer.gameConfig.rooms[i].idClient_2) == 0) {
+            // TODO /* Correction du if à faire */
+        }
+        while (true){
+            send(connection->sockfd, &configuration, sizeof(configuration), 0);
+            break;
         }
     }
 
-
-
     printf("Client \033[0;36m#%s\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", buffer_in, connection->index);
 
-    while ((len = read(connection->sockfd, buffer_in, BUFFERSIZE)) > 0) 
-    {
-        if (strncmp(buffer_in, "bye", 3) == 0) 
-        {
+    while ((len = read(connection->sockfd, buffer_in, BUFFERSIZE)) > 0) {
+        if (strncmp(buffer_in, "bye", 3) == 0) {
             break;
         }
-        #if DEBUG
-            printf("\033[1;32m----------------------------DEBUG----------------------------\033[0m\n");
-            printf("\033[1;37mLen : \033[0;32m%i\033[0m\n", len);
-            printf("\033[1;37mBuffer : \033[0;32m%.*s\033[0m", len, buffer_in);
-            printf("\033[1;32m-------------------------------------------------------------\033[0m\n");
-        #endif
         strcpy(buffer_out, "\n\033[1;37mServer Echo : \033[0m");
         strncat(buffer_out, buffer_in, len);
 
@@ -119,6 +89,7 @@ void *threadProcess(void *ptr)
         //clear input buffer
         memset(buffer_in, '\0', BUFFERSIZE);
     }
+
     printf("Connection to client \033[0;36m#%i\033[0m has ended.\n", connection->index);
     close(connection->sockfd);
     del(connection);

@@ -6,8 +6,7 @@
 #include "../headers/game.h"
 #include "../headers/config.h"
 
-PlayerGameSettings * initPlayerGameSettings(ServerConfig cfgServer, int roomID)
-{
+PlayerGameSettings * initPlayerGameSettings(ServerConfig cfgServer, int roomID) {
     PlayerGameSettings *gameSettings;
 
     gameSettings = (PlayerGameSettings *)malloc(sizeof(PlayerGameSettings));

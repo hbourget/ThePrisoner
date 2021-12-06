@@ -3,10 +3,7 @@
 #ifndef GAME_H
 #define GAME_H 
 
-enum actions
-{ 
-    SILENCE, COOP, BETRAY 
-};
+enum actions { SILENCE, COOP, BETRAY };
 
 typedef struct {
     int bet;
