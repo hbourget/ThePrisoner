@@ -25,4 +25,5 @@ typedef struct {
 ServerConfig initCfg();
 void showConfig(ServerConfig cfgServer);
 void showRooms(ServerConfig cfgServer);
+
 #endif /* THEPRISONER_SERVER_CONFIG_H */

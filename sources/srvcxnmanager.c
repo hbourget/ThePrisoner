@@ -48,11 +48,7 @@ void *threadProcess(void *ptr) {
     char buffer_out[BUFFERSIZE];
     int len;
     connection_t *connection;
-
-    /* Remplissage de la struct (test - à virer ensuite)*/
     PlayerGameSettings configuration;
-    /*configuration.balance = 566;
-    configuration.totalR = 7;*/
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
@@ -83,7 +79,7 @@ void *threadProcess(void *ptr) {
 
         write(connection->sockfd, buffer_out, strlen(buffer_out));
 
-        //clear input buffer
+        //Reset du buffer d'entrée
         memset(buffer_in, '\0', BUFFERSIZE);
     }
 

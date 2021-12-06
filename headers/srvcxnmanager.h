@@ -30,6 +30,6 @@ void add(connection_t *connection);
 void del(connection_t *connection);
 void *threadProcess(void *ptr);
 int create_server_socket(ServerConfig cfgServer) ;
-int sprintf(char *str, const char *format, ...);
+//int sprintf(char *str, const char *format, ...);
 
 #endif /* SRVCXNMANAGER_H */
