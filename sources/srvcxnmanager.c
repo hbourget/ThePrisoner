@@ -52,12 +52,13 @@ void *threadProcess(void *ptr) {
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
-    printf("New incoming connection \n");
 
     add(connection);
 
     char *str = malloc(sizeof(strlen(buffer_in)));
     len = read(connection->sockfd, buffer_in, BUFFERSIZE);
+
+    printf("Client \033[0;36m#%s\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", buffer_in, connection->index);
 
     for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
         memset(str, 0, strlen(buffer_in));
@@ -74,6 +75,14 @@ void *threadProcess(void *ptr) {
         if (strncmp(buffer_in, "bye", 3) == 0) {
             break;
         }
+
+        #if DEBUG
+            printf("\033[1;32m----------------------------DEBUG----------------------------\033[0m\n");
+            printf("\033[1;37mLen : \033[0;32m%i\033[0m\n", len);
+            printf("\033[1;37mBuffer : \033[0;32m%.*s\033[0m", len, buffer_in);
+            printf("\033[1;32m-------------------------------------------------------------\033[0m\n");
+        #endif
+
         strcpy(buffer_out, "\n\033[1;37mServer Echo : \033[0m");
         strncat(buffer_out, buffer_in, len);
 
