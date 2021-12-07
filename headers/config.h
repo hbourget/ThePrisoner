@@ -22,6 +22,12 @@ typedef struct {
     GameConfig gameConfig;
 } ServerConfig;
 
+typedef struct {
+    const char *serverIP;
+    int serverPort;
+    const char *idClient;
+} ClientConfig;
+
 ServerConfig initCfg();
 void showConfig(ServerConfig cfgServer);
 void showRooms(ServerConfig cfgServer);
