@@ -56,7 +56,7 @@ void *threadProcess(void *ptr) {
     add(connection);
 
     read(connection->sockfd, &cfgClient, sizeof(cfgClient));
-    printf("\nID: %s \n", cfgClient.idClient);
+    printf("\nID: %d \n", cfgClient.idClient);
 
     /*for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
@@ -67,7 +67,7 @@ void *threadProcess(void *ptr) {
     }*/
     
 
-    printf("Client \033[0;36m#%s\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
+    printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
 
     len = 0; //check l'uiltité réel.
     while ((len = read(connection->sockfd, buffer_in, BUFFERSIZE)) > 0) {
@@ -91,7 +91,7 @@ void *threadProcess(void *ptr) {
         memset(buffer_in, '\0', BUFFERSIZE);
     }
 
-    printf("Connection to client \033[0;36m#%s\033[0m has ended.\n", cfgClient.idClient);
+    printf("Connection to client \033[0;36m#%d\033[0m has ended.\n", cfgClient.idClient);
     close(connection->sockfd);
     del(connection);
     free(connection);

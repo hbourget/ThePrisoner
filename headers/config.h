@@ -7,8 +7,8 @@ typedef struct {
     const char *name;
     int nbRounds;
     int bank;
-    const char *idClient_1;
-    const char *idClient_2;
+    int idClient_1;
+    int idClient_2;
 } Room;
 
 typedef struct {
@@ -23,9 +23,9 @@ typedef struct {
 } ServerConfig;
 
 typedef struct {
-    const char *serverIP;
+    char serverIP[10];
     int serverPort;
-    const char *idClient;
+    int idClient;
 } ClientConfig;
 
 ServerConfig initCfg();
