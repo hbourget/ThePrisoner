@@ -56,7 +56,7 @@ void *threadProcess(void *ptr) {
     add(connection);
 
     read(connection->sockfd, &cfgClient, sizeof(cfgClient));
-    printf("\nID: %d \n", cfgClient.idClient);
+    printf("\nID Client : %d ¦ IP : %s ¦ Port : %d\n", cfgClient.idClient, cfgClient.serverIP, cfgClient.serverPort);
 
     /*for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
