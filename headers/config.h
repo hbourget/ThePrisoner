@@ -23,7 +23,7 @@ typedef struct {
 } ServerConfig;
 
 typedef struct {
-    char serverIP[10];
+    char serverIP[15];
     int serverPort;
     int idClient;
 } ClientConfig;
