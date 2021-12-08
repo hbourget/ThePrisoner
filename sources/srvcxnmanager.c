@@ -55,15 +55,17 @@ void *threadProcess(void *ptr) {
     connection = (connection_t *) ptr;
     add(connection);
 
-    if((len = read(connection->sockfd, &cfgClient, sizeof(cfgClient))) > 0){ // a tester ! Sinon remplacer par while
-        for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
-            //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
-            if(strcmp(cfgClient.idClient, cfgServer.gameConfig.rooms[i].idClient_1) == 0 || strcmp(cfgClient.idClient, cfgServer.gameConfig.rooms[i].idClient_2) == 0) {
-                cfgPlayer = initPlayerGameSettings(cfgServer, i);
-                send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
-            }
+    read(connection->sockfd, &cfgClient, sizeof(cfgClient));
+    printf("\nID: %s \n", cfgClient.idClient);
+
+    /*for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
+        //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
+        if(strcmp(cfgClient.idClient, cfgServer.gameConfig.rooms[i].idClient_1) == 0 || strcmp(cfgClient.idClient, cfgServer.gameConfig.rooms[i].idClient_2) == 0) {
+            cfgPlayer = initPlayerGameSettings(cfgServer, i);
+            send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
         }
-    }
+    }*/
+    
 
     printf("Client \033[0;36m#%s\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
 
