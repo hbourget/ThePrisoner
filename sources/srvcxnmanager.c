@@ -48,19 +48,19 @@ void *threadProcess(void *ptr) {
     char buffer_out[BUFFERSIZE];
     int len;
     connection_t *connection;
-    PlayerGameSettings configuration;
-    ClientConfig uneConfigClient;
+    PlayerGameSettings cfgPlayer;
+    ClientConfig cfgClient;
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
     add(connection);
 
-    if((len = read(connection->sockfd, &uneConfigClient, sizeof(uneConfigClient))) > 0){ // a tester ! Sinon remplacer par while
+    if((len = read(connection->sockfd, &cfgClient, sizeof(cfgClient))) > 0){ // a tester ! Sinon remplacer par while
         for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
             //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
-            if(strcmp(uneConfigClient.idClient, cfgServer.gameConfig.rooms[i].idClient_1) == 0 || strcmp(uneConfigClient.idClient, cfgServer.gameConfig.rooms[i].idClient_2) == 0) {
-                configuration = initPlayerGameSettings(cfgServer, i);
-                send(connection->sockfd, &configuration, sizeof(configuration), 0);
+            if(strcmp(cfgClient.idClient, cfgServer.gameConfig.rooms[i].idClient_1) == 0 || strcmp(cfgClient.idClient, cfgServer.gameConfig.rooms[i].idClient_2) == 0) {
+                cfgPlayer = initPlayerGameSettings(cfgServer, i);
+                send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
             }
         }
     }
