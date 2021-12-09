@@ -46,7 +46,7 @@ void *threadProcess(void *ptr) {
     ServerConfig cfgServer = initCfg();
     char buffer_in[BUFFERSIZE];
     char buffer_out[BUFFERSIZE];
-    int len;
+    int len = 0;
     connection_t *connection;
     PlayerGameSettings cfgPlayer;
     ClientConfig cfgClient;
@@ -56,7 +56,7 @@ void *threadProcess(void *ptr) {
     add(connection);
 
     read(connection->sockfd, &cfgClient, sizeof(cfgClient));
-    printf("\nID Client : %d ¦ IP : %s ¦ Port : %d\n", cfgClient.idClient, cfgClient.serverIP, cfgClient.serverPort);
+    printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
 
     for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
@@ -64,13 +64,15 @@ void *threadProcess(void *ptr) {
         {
             cfgPlayer = initPlayerGameSettings(cfgServer, i);
             send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
+            while((len = read(connection->sockfd, &cfgPlayer, BUFFERSIZE)) > 0)
+            {
+                printf("UPDATED BALANCE: %d\n",cfgPlayer.balance);
+            }
         }
     }
-    
 
-    printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
 
-    len = 0; //check l'uiltité réel.
+    /*len = 0; //check l'uiltité réel.
     while ((len = read(connection->sockfd, buffer_in, BUFFERSIZE)) > 0) {
         if (strncmp(buffer_in, "bye", 3) == 0) {
             break;
@@ -90,7 +92,7 @@ void *threadProcess(void *ptr) {
 
         //Reset du buffer d'entrée
         memset(buffer_in, '\0', BUFFERSIZE);
-    }
+    }*/
 
     printf("Connection to client \033[0;36m#%d\033[0m has ended.\n", cfgClient.idClient);
     close(connection->sockfd);
