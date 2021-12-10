@@ -6,7 +6,7 @@
 #include "../headers/game.h"
 #include "../headers/config.h"
 
-PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID) {
+PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, int idClient) {
     PlayerGameSettings gameSettings;
 
     // gameSettings = (PlayerGameSettings)malloc(sizeof(PlayerGameSettings));
@@ -15,7 +15,38 @@ PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID) {
     gameSettings.bet = 0;
     gameSettings.currentR = 1;
     gameSettings.totalR = cfgServer.gameConfig.rooms[roomID].nbRounds;
+    gameSettings.responded = false;
+    gameSettings.idClient = idClient;
     return gameSettings;
+}
+
+GameData hydrateData(GameData gameData, PlayerGameSettings cfgPlayer)
+{
+    if(gameData.p1.idClient == cfgPlayer.idClient)
+    {
+        gameData.p1 = cfgPlayer;
+    }
+    else if (gameData.p2.idClient == cfgPlayer.idClient)
+    {
+        gameData.p2 = cfgPlayer;
+    }
+
+    return gameData;
+}
+
+GameData firstHydrateData(PlayerGameSettings cfgPlayer)
+{
+    GameData gameData;
+
+    if(gameData.p1.idClient != cfgPlayer.idClient)
+    {
+        gameData.p1 = cfgPlayer;
+    }
+    else
+    {
+        gameData.p2 = cfgPlayer;
+    }
+    return gameData;
 }
 
 void playRound(PlayerGameSettings p1_gameSettings, PlayerGameSettings p2_gameSettings)

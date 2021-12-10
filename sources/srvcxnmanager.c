@@ -14,6 +14,7 @@
 #include "../headers/game.h"
 
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
+GameData gameData;
 
 void init_sockets_array() {
     for (int i = 0; i < MAXSIMULTANEOUSCLIENTS; i++) {
@@ -43,13 +44,11 @@ void del(connection_t *connection) {
 }
 
 void *threadProcess(void *ptr) {
-    ServerConfig cfgServer = initCfg();
-    char buffer_in[BUFFERSIZE];
-    char buffer_out[BUFFERSIZE];
-    int len = 0;
     connection_t *connection;
-    PlayerGameSettings cfgPlayer;
+    ServerConfig cfgServer = initCfg();
     ClientConfig cfgClient;
+    PlayerGameSettings cfgPlayer;
+    int len = 0;
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
@@ -58,15 +57,30 @@ void *threadProcess(void *ptr) {
     read(connection->sockfd, &cfgClient, sizeof(cfgClient));
     printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
 
-    for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
+    for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) 
+    {
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
         if(cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_1 || cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_2)
         {
-            cfgPlayer = initPlayerGameSettings(cfgServer, i);
-            send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
-            while((len = read(connection->sockfd, &cfgPlayer, BUFFERSIZE)) > 0)
+            gameData.p1.idClient = 0;
+            gameData.p2.idClient = 0;
+
+            //Initialisation et envoi de la configuration initiale au joueur
+            cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
+            gameData = firstHydrateData(cfgPlayer);
+            send(connection->sockfd, &gameData, sizeof(gameData), 0);
+            //Ecoute de ce qu'envoi le serveur
+            while((len = read(connection->sockfd, &gameData, sizeof(gameData))) > 0)
             {
-                printf("UPDATED BALANCE: %d\n",cfgPlayer.balance);
+                if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0)
+                {
+                    /*printf("IDClient: %d Balance: %d TotalRounds: %d Bet: %d CurrentRound: %d \n",cfgClient.idClient, cfgPlayer.balance, cfgPlayer.totalR, cfgPlayer.bet, cfgPlayer.currentR);
+                    send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);*/
+                }
+                else
+                {
+                    printf("waiting for both clients...");
+                }
             }
         }
     }
