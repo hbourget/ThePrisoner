@@ -34,11 +34,10 @@ GameData hydrateData(GameData gameData, PlayerGameSettings cfgPlayer)
     return gameData;
 }
 
-GameData firstHydrateData(PlayerGameSettings cfgPlayer)
+GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int i)
 {
-    GameData gameData;
 
-    if(gameData.p1.idClient != cfgPlayer.idClient)
+    if(cfgServer.gameConfig.rooms[i].idClient_1 == cfgPlayer.idClient)
     {
         gameData.p1 = cfgPlayer;
     }

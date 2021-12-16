@@ -26,7 +26,7 @@ bool nextround(PlayerGameSettings p1_gameSettings, PlayerGameSettings p2_gameSet
 
 void playRound(PlayerGameSettings p1_gameSettings, PlayerGameSettings p2_gameSettings);
 
-GameData firstHydrateData(PlayerGameSettings cfgPlayer);
+GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int i);
 
 GameData hydrateData(GameData gameData, PlayerGameSettings cfgPlayer);
 #endif /* GAME.H */

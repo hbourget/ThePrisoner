@@ -16,6 +16,7 @@
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
 GameData gameData;
 
+
 void init_sockets_array() {
     for (int i = 0; i < MAXSIMULTANEOUSCLIENTS; i++) {
         connections[i] = NULL;
@@ -62,24 +63,22 @@ void *threadProcess(void *ptr) {
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
         if(cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_1 || cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_2)
         {
-            gameData.p1.idClient = 0;
-            gameData.p2.idClient = 0;
-
-            //Initialisation et envoi de la configuration initiale au joueur
-            cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
-            gameData = firstHydrateData(cfgPlayer);
-            send(connection->sockfd, &gameData, sizeof(gameData), 0);
             //Ecoute de ce qu'envoi le serveur
             while((len = read(connection->sockfd, &gameData, sizeof(gameData))) > 0)
             {
+                //Initialisation et envoi de la configuration initiale au joueur
+                cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
+                gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
+                send(connection->sockfd, &gameData, sizeof(gameData), 0);
+
                 if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0)
                 {
-                    /*printf("IDClient: %d Balance: %d TotalRounds: %d Bet: %d CurrentRound: %d \n",cfgClient.idClient, cfgPlayer.balance, cfgPlayer.totalR, cfgPlayer.bet, cfgPlayer.currentR);
-                    send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);*/
+                    printf("Both client belonging to room %s have connected.\n", cfgServer.gameConfig.rooms[i].name);
+                    //Server is now ready to send game infos to client and is listening to clients sending game infos in their room.
                 }
                 else
                 {
-                    printf("waiting for both clients...");
+                    printf("waiting for both clients...\n");
                 }
             }
         }
