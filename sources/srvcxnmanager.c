@@ -65,7 +65,7 @@ void *threadProcess(void *ptr) {
         {
             cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
             //Ecoute de ce qu'envoi le serveur
-            while((len = read(connection->sockfd, &cfgPlayer, sizeof(gameData))) > 0)
+            while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
             {
                 gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
                 //Initialisation et envoi de la configuration initiale au joueur
