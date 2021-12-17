@@ -66,6 +66,7 @@ void *threadProcess(void *ptr) {
             //Initialisation de la configuration propre au client qui vient de se connecter.
             cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
             send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
+
             while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
             {
                 //Hydratation des configurations de la partie en cours.
