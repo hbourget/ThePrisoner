@@ -63,14 +63,16 @@ void *threadProcess(void *ptr) {
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
         if(cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_1 || cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_2)
         {
+            //Initialisation de la configuration propre au client qui vient de se connecter.
             cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
-            //Ecoute de ce qu'envoi le serveur
+            send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
+
             while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
             {
+                //Hydratation des configurations de la partie en cours.
                 gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
-                //Initialisation et envoi de la configuration initiale au joueur
-                send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
 
+                //Le serveur attend que deux clients de la même room se connecte.
                 if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0)
                 {
                     printf("Both client belonging to room %s have connected.\n", cfgServer.gameConfig.rooms[i].name);
@@ -80,7 +82,7 @@ void *threadProcess(void *ptr) {
                 }
                 else
                 {
-                    printf("waiting for both clients...\n");
+                    printf("Waiting for both clients (Room: %s)...\n", cfgServer.gameConfig.rooms[i].name);
                 }
             }
         }
