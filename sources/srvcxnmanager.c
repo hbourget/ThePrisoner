@@ -69,7 +69,7 @@ void *threadProcess(void *ptr) {
             {
                 gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
                 //Initialisation et envoi de la configuration initiale au joueur
-                send(connection->sockfd, &cfgPlayer, sizeof(gameData), 0);
+                send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
 
                 if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0)
                 {
