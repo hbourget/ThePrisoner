@@ -12,7 +12,6 @@ LFLAGS= -lconfig -pthread
 $(EXEC): $(OBJ)
 	$(CXX) $(CFLAGS) -o $@ $(OBJ) $(LBLIBS) $(LFLAGS)
 
-.PHONY: all
 all: $(EXEC)
 	@echo "${GREEN_COLOR}${BOLD}** Generated executable file **"
 
