@@ -63,18 +63,20 @@ void *threadProcess(void *ptr) {
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
         if(cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_1 || cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_2)
         {
+            cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
             //Ecoute de ce qu'envoi le serveur
-            while((len = read(connection->sockfd, &gameData, sizeof(gameData))) > 0)
+            while((len = read(connection->sockfd, &cfgPlayer, sizeof(gameData))) > 0)
             {
-                //Initialisation et envoi de la configuration initiale au joueur
-                cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
                 gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
-                send(connection->sockfd, &gameData, sizeof(gameData), 0);
+                //Initialisation et envoi de la configuration initiale au joueur
+                send(connection->sockfd, &cfgPlayer, sizeof(gameData), 0);
 
                 if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0)
                 {
                     printf("Both client belonging to room %s have connected.\n", cfgServer.gameConfig.rooms[i].name);
-                    //Server is now ready to send game infos to client and is listening to clients sending game infos in their room.
+                    //Le serveur écoute désormais les ConfigPlayerSettings que les clients envoi.
+                    printf("BET P1: %d\n", gameData.p1.bet);
+                    printf("BET P2: %d\n", gameData.p2.bet);
                 }
                 else
                 {
@@ -83,29 +85,6 @@ void *threadProcess(void *ptr) {
             }
         }
     }
-
-
-    /*len = 0; //check l'uiltité réel.
-    while ((len = read(connection->sockfd, buffer_in, BUFFERSIZE)) > 0) {
-        if (strncmp(buffer_in, "bye", 3) == 0) {
-            break;
-        }
-
-        #if DEBUG
-            printf("\033[1;32m----------------------------DEBUG----------------------------\033[0m\n");
-            printf("\033[1;37mLen : \033[0;32m%i\033[0m\n", len);
-            printf("\033[1;37mBuffer : \033[0;32m%.*s\033[0m", len, buffer_in);
-            printf("\033[1;32m-------------------------------------------------------------\033[0m\n");
-        #endif
-
-        strcpy(buffer_out, "\n\033[1;37mServer Echo : \033[0m");
-        strncat(buffer_out, buffer_in, len);
-
-        write(connection->sockfd, buffer_out, strlen(buffer_out));
-
-        //Reset du buffer d'entrée
-        memset(buffer_in, '\0', BUFFERSIZE);
-    }*/
 
     printf("Connection to client \033[0;36m#%d\033[0m has ended.\n", cfgClient.idClient);
     close(connection->sockfd);
