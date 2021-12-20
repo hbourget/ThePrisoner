@@ -3,11 +3,11 @@ GREEN_COLOR = `tput setaf 2`
 BOLD = `tput bold`
 
 SRC_CLI = ./src/client/sources/*.c
-OBJ_CLI = $(SRC_CLI:.c=.o)
+OBJ_CLI = $(SRC_CLI:.cc=.o)
 EXEC_CLI = ./build/client
 
 SRC_SRV = ./src/server/sources/*.c
-OBJ_SRV = $(SRC_SRV:.c=.o)
+OBJ_SRV = $(SRC_SRV:.cc=.o)
 EXEC_SRV = ./build/server
 
 CFLAGS = -g -Wall -Wextra `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` 
