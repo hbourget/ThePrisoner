@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <pthread.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -9,32 +8,44 @@
 #include <stdbool.h>
 #include <libconfig.h>
 
+#include<gtk/gtk.h>
+GtkBuilder *builder = NULL;
+
 #include "../headers/clientcxnmanager.h"
+#include "../headers/interface.h"
 #include "../../common/config.h"
 
+ClientConfig cfgClient;
+int sockfd;
+
 int main(int argc, char** argv) {
-    int sockfd;
+    GtkWidget *win;
     int status = 0;
     char msg[100];
     pthread_t thread;
-    ClientConfig cfgClient;
-
-    cfgClient = initClientCfg();
     
+    ClientConfig cfgClient = initClientCfg();
+    int sockfd = open_connection(cfgClient);
+
     showClientConfig(cfgClient);
 
-    sockfd = open_connection(cfgClient);
-
-    //Creation d'un pthread de lecture
     pthread_create(&thread, 0, threadProcess, &sockfd);
-    //write(connection->sock,"Main APP Still running",15);
     pthread_detach(thread);
-    do {
-        fgets(msg, 100, stdin);
-        //printf("sending : %s\n", msg);
-        status = write(sockfd, msg, strlen(msg));
-        //memset(msg,'\0',100);
-    } while (status != -1);
+
+    gtk_init(&argc, &argv);
+
+    builder = gtk_builder_new_from_file("glade/dilemme_prisonnier.glade");
+    if (gtk_builder_add_from_file (builder, "glade/dilemme_prisonnier.glade", NULL) == 0) {
+        fprintf (stderr, "Erreur: ouverture du fichier GLADE\n") ;
+        exit(EXIT_FAILURE);
+    }
+
+    win = GTK_WIDGET(gtk_builder_get_object(builder, "app_win"));
+    gtk_builder_connect_signals(builder, NULL);
+    gtk_widget_show(win);
+
+    gtk_main();
+    g_object_unref (G_OBJECT (builder));
 
     return (EXIT_SUCCESS);
 }

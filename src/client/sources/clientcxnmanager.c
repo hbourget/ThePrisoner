@@ -17,11 +17,8 @@ PlayerGameSettings pgm;
 
 void *threadProcess(void * ptr) {
     PlayerGameSettings cfgPlayer;
-    ClientConfig cfgClient = initClientCfg();
     int sockfd = *((int *) ptr);
 
-    //Envoi de la configuration client au serveur
-    write(sockfd, &cfgClient, sizeof(cfgClient));
     //Lecture de la configuration initiale du joueur
     read(sockfd, &cfgPlayer, sizeof(cfgPlayer));
     printf("%d", cfgPlayer.idClient);
