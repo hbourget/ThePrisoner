@@ -23,11 +23,13 @@ int main(int argc, char** argv) {
     int status = 0;
     char msg[100];
     pthread_t thread;
-    
+
     ClientConfig cfgClient = initClientCfg();
     int sockfd = open_connection(cfgClient);
 
     showClientConfig(cfgClient);
+
+    printf("Main : %d-%d\n", cfgClient.idClient, sockfd);
 
     pthread_create(&thread, 0, threadProcess, &sockfd);
     pthread_detach(thread);
@@ -45,7 +47,6 @@ int main(int argc, char** argv) {
     gtk_widget_show(win);
 
     gtk_main();
-    g_object_unref (G_OBJECT (builder));
 
     return (EXIT_SUCCESS);
 }

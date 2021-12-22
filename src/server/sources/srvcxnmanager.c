@@ -55,8 +55,10 @@ void *threadProcess(void *ptr) {
     connection = (connection_t *) ptr;
     add(connection);
 
-    read(connection->sockfd, &cfgClient, sizeof(cfgClient));
-    printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
+    while ((len = read(connection->sockfd, &cfgClient, sizeof(cfgClient))) > 0){
+        printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
+        break;
+    }
 
     for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) 
     {

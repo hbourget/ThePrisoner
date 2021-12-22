@@ -13,18 +13,12 @@
 #include "../../common/config.h"
 #include "../headers/interface.h"
 
-extern ClientConfig cfgClient;
-extern int sockfd;
-
 void on_window_main_destroy() {
     printf("Quitting..\n ");
     gtk_main_quit();
 }
 void on_connect_button_click(){
-    // On désactive le button histoire de ne pas pouvoir cliquer deux fois.
-    // gtk_widget_set_sensitive (NULL, FALSE);
-
-    //Envoi de la configuration client au serveur
+    printf("Interface : %d-%d\n", cfgClient.idClient, sockfd);
     write(sockfd, &cfgClient, sizeof(cfgClient));
 }
 void on_validate_button_click(){

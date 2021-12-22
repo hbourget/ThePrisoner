@@ -62,7 +62,7 @@
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <signal name="clicked" handler="on_connect_button_click" swapped="no"/>
+            <signal name="pressed" handler="on_connect_button_click" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
