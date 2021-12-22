@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <libconfig.h>
 #include <string.h>
-#include "../headers/config.h"
+#include "../../common/config.h"
 
-ClientConfig initCfg()
+ClientConfig initClientCfg()
 {
   config_t cfg;
 
@@ -33,7 +33,7 @@ ClientConfig initCfg()
   return cfgClient;
 }
 
-void showConfig(ClientConfig cfgClient)
+void showClientConfig(ClientConfig cfgClient)
 {
     printf("\n\033[0;36m--------------------------\n\033[1;36m CLIENT CONFIGURATION\n \n\033[1;37m - Server IP Address: \033[0;36m%s \n\033[1;37m - Server Port: \033[0;36m%d \n\033[1;37m - Client ID: \033[0;36m%d\n\033[0;36m--------------------------\033[0m\n", cfgClient.serverIP, cfgClient.serverPort, cfgClient.idClient);
 }

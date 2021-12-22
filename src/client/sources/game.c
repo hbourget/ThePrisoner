@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "../headers/game.h"
+#include "../../common/game.h"
 
 // PlayerGameSettings getGameSettings() { return configuration; }
 

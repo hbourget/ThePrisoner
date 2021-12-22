@@ -10,8 +10,8 @@
 #include <libconfig.h>
 
 #include "../headers/srvcxnmanager.h"
-#include "../headers/config.h"
-#include "../headers/game.h"
+#include "../../common/config.h"
+#include "../../common/game.h"
 
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
 GameData gameData;
@@ -46,7 +46,7 @@ void del(connection_t *connection) {
 
 void *threadProcess(void *ptr) {
     connection_t *connection;
-    ServerConfig cfgServer = initCfg();
+    ServerConfig cfgServer = initServerCfg();
     ClientConfig cfgClient;
     PlayerGameSettings cfgPlayer;
     int len = 0;

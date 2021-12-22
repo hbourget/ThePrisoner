@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libconfig.h>
-#include "../headers/config.h"
+#include "../../common/config.h"
 
-ServerConfig initCfg()
+ServerConfig initServerCfg()
 {
   config_t cfg;
 
@@ -55,7 +55,7 @@ ServerConfig initCfg()
 }
 
 
-void showConfig(ServerConfig cfgServer)
+void showServerConfig(ServerConfig cfgServer)
 {
     printf("\n\033[0;36m--------------------------\n\033[1;36m SERVER CONFIGURATION\n \n\033[1;37m - IP Address: \033[0;36m%s \n\033[1;37m - Port: \033[0;36m%d \n\033[0;36m--------------------------\n", cfgServer.serverIP, cfgServer.serverPort);
 }

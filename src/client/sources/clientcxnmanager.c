@@ -10,14 +10,14 @@
 #include <libconfig.h>
 
 #include "../headers/clientcxnmanager.h"
-#include "../headers/config.h"
-#include "../headers/game.h"
+#include "../../common/config.h"
+#include "../../common/game.h"
 
 PlayerGameSettings pgm;
 
 void *threadProcess(void * ptr) {
     PlayerGameSettings cfgPlayer;
-    ClientConfig cfgClient = initCfg();
+    ClientConfig cfgClient = initClientCfg();
 
     char buffer_in[BUFFERSIZE];
     int sockfd = *((int *) ptr);

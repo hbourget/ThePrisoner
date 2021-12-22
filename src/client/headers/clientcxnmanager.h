@@ -9,7 +9,7 @@
  * Author: aurelio
  *
  */
-#include "config.h"
+#include "../../common/config.h"
 
 #ifndef CLIENTCXNMANAGER_H
 #define CLIENTCXNMANAGER_H

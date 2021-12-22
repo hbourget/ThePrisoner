@@ -10,7 +10,7 @@
 #include <libconfig.h>
 
 #include "../headers/clientcxnmanager.h"
-#include "../headers/config.h"
+#include "../../common/config.h"
 
 int main(int argc, char** argv) {
     int sockfd;
@@ -19,9 +19,9 @@ int main(int argc, char** argv) {
     pthread_t thread;
     ClientConfig cfgClient;
 
-    cfgClient = initCfg();
+    cfgClient = initClientCfg();
     
-    showConfig(cfgClient);
+    showClientConfig(cfgClient);
 
     sockfd = open_connection(cfgClient);
 
