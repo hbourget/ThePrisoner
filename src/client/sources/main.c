@@ -15,9 +15,6 @@ GtkBuilder *builder = NULL;
 #include "../headers/interface.h"
 #include "../../common/config.h"
 
-ClientConfig cfgClient;
-int sockfd;
-
 int main(int argc, char** argv) {
     GtkWidget *win;
     int status = 0;
@@ -26,6 +23,7 @@ int main(int argc, char** argv) {
 
     ClientConfig cfgClient = initClientCfg();
     int sockfd = open_connection(cfgClient);
+    setClientSettings(sockfd, cfgClient);
 
     showClientConfig(cfgClient);
 

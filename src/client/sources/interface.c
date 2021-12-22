@@ -18,6 +18,9 @@ void on_window_main_destroy() {
     gtk_main_quit();
 }
 void on_connect_button_click(){
+    ClientConfig cfgClient = getClientConfig();
+    int sockfd = getClientSockfd();
+
     printf("Interface : %d-%d\n", cfgClient.idClient, sockfd);
     write(sockfd, &cfgClient, sizeof(cfgClient));
 }

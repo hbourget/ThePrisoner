@@ -14,6 +14,18 @@
 #include "../../common/game.h"
 
 PlayerGameSettings pgm;
+ClientSettings settings;
+
+void setClientSettings(int socket, ClientConfig config){
+    settings.sockfd = socket;
+    settings.cfgClient = config;
+}
+ClientConfig getClientConfig(){
+    return settings.cfgClient;
+}
+int getClientSockfd(){
+    return settings.sockfd;
+}
 
 void *threadProcess(void * ptr) {
     PlayerGameSettings cfgPlayer;

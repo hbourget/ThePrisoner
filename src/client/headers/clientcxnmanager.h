@@ -16,6 +16,16 @@
 
 #define BUFFERSIZE 2048
 
+typedef struct {
+    int sockfd;
+    ClientConfig cfgClient;
+} ClientSettings;
+
+
+void setClientSettings(int socket, ClientConfig config);
+ClientConfig getClientConfig();
+int getClientSockfd();
+
 void *threadProcess(void * ptr);
 int open_connection(ClientConfig cfgClient);
 
