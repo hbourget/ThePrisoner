@@ -27,8 +27,6 @@ int main(int argc, char** argv) {
 
     showClientConfig(cfgClient);
 
-    printf("Main : %d-%d\n", cfgClient.idClient, sockfd);
-
     pthread_create(&thread, 0, threadProcess, &sockfd);
     pthread_detach(thread);
 
