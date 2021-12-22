@@ -22,13 +22,13 @@
 #include <stdbool.h>
 
 #include "../headers/srvcxnmanager.h"
-#include "../headers/config.h"
+#include "../../common/config.h"
 
 int main(int argc, char** argv) 
 {
-    ServerConfig cfgServer = initCfg();
+    ServerConfig cfgServer = initServerCfg();
 
-    showConfig(cfgServer);
+    showServerConfig(cfgServer);
     showRooms(cfgServer);
 
     int sockfd = -1;

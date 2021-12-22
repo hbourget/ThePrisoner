@@ -3,8 +3,8 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "../headers/game.h"
-#include "../headers/config.h"
+#include "../../common/game.h"
+#include "../../common/config.h"
 
 PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, int idClient) {
     PlayerGameSettings gameSettings;

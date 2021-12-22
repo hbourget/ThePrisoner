@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <libconfig.h>
 #include <stdbool.h>
-#ifndef THEPRISONER_SERVER_CONFIG_H
-#define THEPRISONER_SERVER_CONFIG_H
+
+#ifndef THEPRISONER_CONFIG_H
+#define THEPRISONER_CONFIG_H
 
 typedef struct {
     const char *name;
@@ -29,8 +31,11 @@ typedef struct {
     int idClient;
 } ClientConfig;
 
-ServerConfig initCfg();
-void showConfig(ServerConfig cfgServer);
+ServerConfig initServerCfg();
+void showServerConfig(ServerConfig cfgServer);
 void showRooms(ServerConfig cfgServer);
 
-#endif /* THEPRISONER_SERVER_CONFIG_H */
+ClientConfig initClientCfg();
+void showClientConfig(ClientConfig cfgClient);
+
+#endif /* THEPRISONER_CONFIG_H */
