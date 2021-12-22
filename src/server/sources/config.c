@@ -10,7 +10,7 @@ ServerConfig initServerCfg()
   config_init(&cfg);
 
   // Lit le fichier, si il y a une erreur, affichage + destruction.
-  if(! config_read_file(&cfg, "../../../cfg/server.config"))
+  if(! config_read_file(&cfg, "../cfg/server.config"))
   {
     fprintf(stderr, "%s:%d - %s\n", config_error_file(&cfg),config_error_line(&cfg), config_error_text(&cfg));
     config_destroy(&cfg);
