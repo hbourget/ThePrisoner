@@ -10,7 +10,7 @@ SRC_SRV = ./src/server/sources/*.c
 OBJ_SRV = $(SRC_SRV:.cc=.o)
 EXEC_SRV = ./build/server
 
-CFLAGS = -g -Wall -Wextra `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` 
+CFLAGS = -g `pkg-config --cflags gtk+-3.0 --libs gtk+-3.0` 
 LFLAGS = -lconfig -pthread -DDEBUG -rdynamic
 
 all:

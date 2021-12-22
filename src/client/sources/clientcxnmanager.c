@@ -18,10 +18,7 @@ PlayerGameSettings pgm;
 void *threadProcess(void * ptr) {
     PlayerGameSettings cfgPlayer;
     ClientConfig cfgClient = initClientCfg();
-
-    char buffer_in[BUFFERSIZE];
     int sockfd = *((int *) ptr);
-    int len;
 
     //Envoi de la configuration client au serveur
     write(sockfd, &cfgClient, sizeof(cfgClient));
