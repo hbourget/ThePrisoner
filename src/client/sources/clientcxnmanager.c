@@ -38,18 +38,26 @@ ClientConfig getClientConfig(){
 int getClientSockfd(){
     return interfaceParams.sockfd;
 }
+
 void *threadProcess(void * ptr) {
     PlayerGameSettings cfgPlayer;
     int sockfd = *((int *) ptr), len = 0;
 
     //Lecture de la configuration initiale du joueur
+    //read(sockfd, &cfgPlayer, sizeof(cfgPlayer));
+    //setCfgPlayer(cfgPlayer);
+
+    ClientConfig cfgClient = initClientCfg();
+    write(sockfd, &cfgClient, sizeof(cfgClient));
+
     read(sockfd, &cfgPlayer, sizeof(cfgPlayer));
-    setCfgPlayer(cfgPlayer);
+    write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
 
     // Lecture des configurations du joueur
-    while ((len = read(sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0){
+    /*while ((len = read(sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0){
         setCfgPlayer(cfgPlayer);
-    }
+        printf("\n ID CLIENT MANAGER : %d", cfgPlayer.idClient);
+    }*/
 
     //close(sockfd);
     //printf("client pthread ended, len=%d\n", len);

@@ -54,10 +54,8 @@ void *threadProcess(void *ptr) {
     connection = (connection_t *) ptr;
     add(connection);
 
-    while ((len = read(connection->sockfd, &cfgClient, sizeof(cfgClient))) > 0){
-        printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
-        break;
-    }
+    read(connection->sockfd, &cfgClient, sizeof(cfgClient));
+    printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
 
     for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) 
     {
@@ -78,8 +76,8 @@ void *threadProcess(void *ptr) {
                 {
                     printf("Both client belonging to room %s have connected.\n", cfgServer.gameConfig.rooms[i].name);
                     //Le serveur écoute désormais les ConfigPlayerSettings que les clients envoi.
-                    printf("BET P1: %d\n", gameData.p1.bet);
-                    printf("BET P2: %d\n", gameData.p2.bet);
+                    printf("Test: BET P1: %d\n", gameData.p1.bet);
+                    printf("Test: BET P2: %d\n", gameData.p2.bet);
                 }
                 else
                 {

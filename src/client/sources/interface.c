@@ -21,17 +21,20 @@ PlayerGameSettings cfgPlayer;
 void setCfgPlayer(PlayerGameSettings cfg){
     cfgPlayer = cfg;
 }
-PlayerGameSettings getCfgPlayer(){
-    return cfgPlayer;
-}
+
 void on_window_main_destroy() {
     printf("Quitting..\n ");
     gtk_main_quit();
 }
+
+//CODE NON FONCTIONNEL EN DESSOUS ATTENTION 
 void on_connect_button_click(){
     cfgClient = getClientConfig();
     sockfd = getClientSockfd();
     write(sockfd, &cfgClient, sizeof(cfgClient));
+
+    printf("\nINTERFACE, ON_BUTTON_CLICK ID CLIENT : %d", cfgPlayer.idClient);
+    write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
 }
 void updateInterface(PlayerGameSettings cfg){
 
