@@ -80,4 +80,5 @@ void playRound(GameData gameData)
             gameData.p2.balance -= (gameData.p2.bet / 2);
         }
     }
+    gameData.currentRound += 1;
 }
