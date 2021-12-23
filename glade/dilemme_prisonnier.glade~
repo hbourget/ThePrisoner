@@ -5,22 +5,22 @@
   <object class="GtkImage" id="10">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/10$.jpg</property>
+    <property name="pixbuf">../img/10$.png</property>
   </object>
   <object class="GtkImage" id="100">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/100$.jpg</property>
+    <property name="pixbuf">../img/100$.png</property>
   </object>
   <object class="GtkImage" id="25">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/25$.jpg</property>
+    <property name="pixbuf">../img/25$.png</property>
   </object>
   <object class="GtkImage" id="50">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/50$.jpg</property>
+    <property name="pixbuf">../img/50$.png</property>
   </object>
   <object class="GtkImage" id="betray">
     <property name="visible">True</property>
@@ -62,7 +62,8 @@
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <signal name="pressed" handler="on_connect_button_click" swapped="no"/>
+            <property name="margin-bottom">25</property>
+            <signal name="clicked" handler="on_connect_button_click" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -92,6 +93,7 @@
                     <property name="image">10</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
+                    <signal name="toggled" handler="on_toggled_10" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -107,6 +109,7 @@
                     <property name="image">25</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
+                    <signal name="toggled" handler="on_toggled_25" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -122,6 +125,7 @@
                     <property name="image">50</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
+                    <signal name="toggled" handler="on_toggled_50" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">2</property>
@@ -137,6 +141,7 @@
                     <property name="image">100</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
+                    <signal name="toggled" handler="on_toggled_100" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">3</property>
@@ -179,6 +184,7 @@
                     <property name="image">betray</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
+                    <signal name="toggled" handler="on_toggled_betray" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -195,6 +201,7 @@
                     <property name="image">cooperate</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
+                    <signal name="toggled" handler="on_toggled_cooperate" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

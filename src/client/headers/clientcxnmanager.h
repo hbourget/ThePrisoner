@@ -1,4 +1,5 @@
 #include "../../common/config.h"
+#include "../../common/game.h"
 
 #ifndef CLIENTCXNMANAGER_H
 #define CLIENTCXNMANAGER_H
@@ -21,6 +22,8 @@ ClientConfig getClientConfig();
 int getClientSockfd();
 int open_connection(ClientConfig cfgClient);
 void *threadProcess(void * ptr);
+void setCfgPlayer(PlayerGameSettings cfg);
+PlayerGameSettings getCfgPlayer();
 
 #endif /* CLIENTCXNMANAGER_H */
 

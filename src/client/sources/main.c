@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     ClientConfig cfgClient = initClientCfg();
     int sockfd = open_connection(cfgClient);
 
-    //Transert ces deux paramètres au clientcxnmanager
+    //Transfert ces deux paramètres au clientcxnmanager
     setInterfaceParams(sockfd, cfgClient);
 
     showClientConfig(cfgClient);
