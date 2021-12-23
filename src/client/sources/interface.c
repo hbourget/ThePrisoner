@@ -17,7 +17,6 @@
 ClientConfig cfgClient;
 int sockfd;
 PlayerGameSettings cfgPlayer;
-RoundChoice roundChoice;
 
 void setCfgPlayer(PlayerGameSettings cfg){
     cfgPlayer = cfg;
@@ -38,9 +37,7 @@ void updateInterface(PlayerGameSettings cfg){
 
 }
 void on_validate_button_click () {
-    printf("Mise choisi %d", roundChoice.bet);
-    cfgPlayer.action = roundChoice.action;
-    cfgPlayer.bet = roundChoice.bet;
+    printf("Mise choisi %d", cfgPlayer.bet);
     write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
 }
 void on_leave_button_click(GtkWidget *widget){
@@ -48,20 +45,20 @@ void on_leave_button_click(GtkWidget *widget){
     gtk_main_quit();
 }
 void on_toggled_cooperate(){
-    roundChoice.action = COOP;
+    cfgPlayer.action = COOP;
 }
 void on_toggled_betray(){
-    roundChoice.action = BETRAY;
+    cfgPlayer.action = BETRAY;
 }
 void on_toggled_10(){ 
-    roundChoice.bet = 10;
+    cfgPlayer.bet = 10;
 }
 void on_toggled_25(){ 
-    roundChoice.bet = 25;
+    cfgPlayer.bet = 25;
 }
 void on_toggled_50(){ 
-    roundChoice.bet = 50;
+    cfgPlayer.bet = 50;
 }
 void on_toggled_100(){ 
-    roundChoice.bet = 100;
+    cfgPlayer.bet = 100;
 }

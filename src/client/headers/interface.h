@@ -3,11 +3,8 @@
 
 #include <gtk/gtk.h>
 
-typedef struct {
-    int bet;
-    enum actions action;
-} RoundChoice;
-
+void setCfgPlayer(PlayerGameSettings cfg);
+PlayerGameSettings getCfgPlayer();
 void on_window_main_destroy();
 void on_connect_button_click();
 void on_validate_button_click();
