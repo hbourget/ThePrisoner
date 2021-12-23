@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <pthread.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -13,18 +12,31 @@
 #include "../../common/config.h"
 #include "../../common/game.h"
 
-PlayerGameSettings pgm;
-ClientSettings settings;
+InterfaceParams interfaceParams;
 
-void setClientSettings(int socket, ClientConfig config){
-    settings.sockfd = socket;
-    settings.cfgClient = config;
+/**
+* @brief Affectation des valeurs à la structure InterfaceParams
+*
+* @param sockfd Socket générer grâce au donner du fichier client.config
+* @param cfgClient Configuration client
+*/
+void setInterfaceParams(int socket, ClientConfig config){
+    interfaceParams.sockfd = socket;
+    interfaceParams.cfgClient = config;
 }
+
+/**
+* @brief Récupération de l'attribut cfgClient de la structure InterfaceParams
+*/
 ClientConfig getClientConfig(){
-    return settings.cfgClient;
+    return interfaceParams.cfgClient;
 }
+
+/**
+* @brief Récupération de l'attribut sockfd de la structure InterfaceParams
+*/
 int getClientSockfd(){
-    return settings.sockfd;
+    return interfaceParams.sockfd;
 }
 
 void *threadProcess(void * ptr) {
@@ -44,6 +56,11 @@ void *threadProcess(void * ptr) {
     //printf("client pthread ended, len=%d\n", len);
 }
 
+/**
+* @brief Ouverture de la connexion vers le serveur
+*
+* @param cfgClient Configuration client (nécessaire pour récupérer le port et l'ip sur laquelle se connecter)
+*/
 int open_connection(ClientConfig cfgClient) {
     int sockfd;
     struct sockaddr_in serverAddr;

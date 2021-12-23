@@ -9,6 +9,7 @@
 #include <libconfig.h>
 
 #include<gtk/gtk.h>
+
 GtkBuilder *builder = NULL;
 
 #include "../headers/clientcxnmanager.h"
@@ -23,7 +24,9 @@ int main(int argc, char** argv) {
 
     ClientConfig cfgClient = initClientCfg();
     int sockfd = open_connection(cfgClient);
-    setClientSettings(sockfd, cfgClient);
+
+    //Transert ces deux paramètres au clientcxnmanager
+    setInterfaceParams(sockfd, cfgClient);
 
     showClientConfig(cfgClient);
 

@@ -16,7 +16,6 @@
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
 GameData gameData;
 
-
 void init_sockets_array() {
     for (int i = 0; i < MAXSIMULTANEOUSCLIENTS; i++) {
         connections[i] = NULL;

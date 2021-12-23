@@ -1,14 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   clientcxnmanager.h
- * Author: aurelio
- *
- */
 #include "../../common/config.h"
 
 #ifndef CLIENTCXNMANAGER_H
@@ -16,18 +5,22 @@
 
 #define BUFFERSIZE 2048
 
+/**
+* Structure permettant la transmission du socket et de la configuration client à l'interface graphique
+*
+* @param sockfd Socket générer grâce au donner du fichier client.config
+* @param cfgClient Configuration client
+*/
 typedef struct {
     int sockfd;
     ClientConfig cfgClient;
-} ClientSettings;
+} InterfaceParams;
 
-
-void setClientSettings(int socket, ClientConfig config);
+void setInterfaceParams(int socket, ClientConfig config);
 ClientConfig getClientConfig();
 int getClientSockfd();
-
-void *threadProcess(void * ptr);
 int open_connection(ClientConfig cfgClient);
+void *threadProcess(void * ptr);
 
 #endif /* CLIENTCXNMANAGER_H */
 

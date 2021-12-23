@@ -3,30 +3,41 @@
 #ifndef GAME_H
 #define GAME_H 
 
-enum actions { SILENCE, COOP, BETRAY };
+//START est l'action par défaut lors de l'initialisation du PlayerGameSettings
+enum actions {START, COOP, BETRAY};
 
+/**
+* @brief Structure des informations personnels du client propre à sa room actuelle
+*
+* @param bet Pari (10, 25, 50, 100)
+* @param balance Balance du client
+* @param action Action du client dans le round (BETRAY / COOP)
+* @param idClient ID du client
+*/
 typedef struct {
     int bet;
     int balance;
-    int currentR;
-    int totalR;
-    enum actions action;
-    bool responded;
     int idClient;
+    enum actions action;
 } PlayerGameSettings;
 
+/**
+* @brief Structure des informations de jeu des clients propre à leur room actuelle
+*
+* @param currentRound Round courant
+* @param totalRounds Nombre total de rounds
+* @param p1 Structure PlayerGameSettings du premier joueur
+* @param p2 Structure PlayerGameSettings du second joueur
+*/
 typedef struct {
+    int currentRound;
+    int totalRounds;
     PlayerGameSettings p1;
     PlayerGameSettings p2;
 } GameData;
 
 PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, int idClient);
-
-bool nextround(PlayerGameSettings p1_gameSettings, PlayerGameSettings p2_gameSettings);
-
-void playRound(PlayerGameSettings p1_gameSettings, PlayerGameSettings p2_gameSettings);
-
 GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int i);
+void playRound(GameData gameData);
 
-GameData hydrateData(GameData gameData, PlayerGameSettings cfgPlayer);
 #endif /* GAME.H */
