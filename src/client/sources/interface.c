@@ -29,19 +29,20 @@ void on_window_main_destroy() {
 
 //CODE NON FONCTIONNEL EN DESSOUS ATTENTION 
 void on_connect_button_click(){
-    cfgClient = getClientConfig();
+    /*cfgClient = getClientConfig();
     sockfd = getClientSockfd();
     write(sockfd, &cfgClient, sizeof(cfgClient));
 
     printf("\nINTERFACE, ON_BUTTON_CLICK ID CLIENT : %d", cfgPlayer.idClient);
-    write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
+    write(sockfd, &cfgPlayer, sizeof(cfgPlayer));*/
+    printf("Bouton se connecter clicked!\n");
 }
 void updateInterface(PlayerGameSettings cfg){
 
 }
 void on_validate_button_click () {
-    printf("Mise choisi %d", cfgPlayer.bet);
-    write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
+    printf("Mise choisi %d\n", cfgPlayer.bet);
+    //write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
 }
 void on_leave_button_click(GtkWidget *widget){
     printf("Quitting..\n ");

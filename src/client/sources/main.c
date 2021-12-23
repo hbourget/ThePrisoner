@@ -35,10 +35,6 @@ int main(int argc, char** argv) {
     gtk_init(&argc, &argv);
 
     builder = gtk_builder_new_from_file("glade/dilemme_prisonnier.glade");
-    if (gtk_builder_add_from_file (builder, "glade/dilemme_prisonnier.glade", NULL) == 0) {
-        fprintf (stderr, "Erreur: ouverture du fichier GLADE\n") ;
-        exit(EXIT_FAILURE);
-    }
 
     win = GTK_WIDGET(gtk_builder_get_object(builder, "app_win"));
     gtk_builder_connect_signals(builder, NULL);
