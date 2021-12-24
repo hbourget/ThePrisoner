@@ -13,12 +13,14 @@ enum actions {START, COOP, BETRAY};
 * @param balance Balance du client
 * @param action Action du client dans le round (BETRAY / COOP)
 * @param idClient ID du client
+* @param responded True: le client à envoyer sa struct au serveur, False: n'a pas envoyer sa struct au serveur
 */
 typedef struct {
     int bet;
     int balance;
     int idClient;
     enum actions action;
+    bool responded;
 } PlayerGameSettings;
 
 /**
@@ -38,6 +40,7 @@ typedef struct {
 
 PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, int idClient);
 GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int i);
-void playRound(GameData gameData);
+GameData playRound(GameData gameData);
+int getWinner(GameData gameData);
 
 #endif /* GAME.H */

@@ -57,30 +57,72 @@ void *threadProcess(void *ptr) {
     read(connection->sockfd, &cfgClient, sizeof(cfgClient));
     printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
 
-    for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) {
+    for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) 
+    {
+        const char *roomName = cfgServer.gameConfig.rooms[i].name;
         //Verifie si le joueur qui vient de se connecter est bien attribué à une room.
-        if(cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_1 || cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_2) {
+        if(cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_1 || cfgClient.idClient == cfgServer.gameConfig.rooms[i].idClient_2) 
+        {
             //Initialisation de la configuration propre au client qui vient de se connecter.
             cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
             send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
 
-            while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0) {
-                //Hydratation des configurations de la partie en cours.
+            while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0) 
+            {
                 gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
 
-                //Le serveur attend que deux clients de la même room se connecte.
-                if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0) {
-                    printf("Both client belonging to room %s have connected.\n", cfgServer.gameConfig.rooms[i].name);
-                    //Le serveur écoute désormais les ConfigPlayerSettings que les clients envoi.
-                    // printf("Test: BET P1: %d\n", gameData.p1.bet);
-                    // printf("Test: BET P2: %d\n", gameData.p2.bet);
+                //Le serveur bloque dans cette section et attend que deux clients de la même room se connecte.
+                if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0) 
+                {
+                    printf("(%s) Both client have connected.\n", roomName);
+                    break;
+                } 
+                else 
+                {
+                    printf("(%s) Waiting for both clients...\n", roomName);
+                }
+            }
+            // Une fois les 2 client de la même room connectés, on bloque dans la boucle de jeu ci dessous
+            while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
+            {
+                //A la reception d'un envoi du client, hydratation de gameData, notamment pour récupérer le status de réponse.
+                gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
+                printf("(%s) Response status of P1: %d\n", roomName, gameData.p1.responded);
+                printf("(%s) Response status of P2: %d\n", roomName, gameData.p2.responded);
 
-                    // calcule des résultats
-                    if(gameData.currentRound + 1 != gameData.totalRounds){
-                        playRound(gameData);
+                //Si les deux joueurs on répondu, on joue le round
+                if(gameData.p1.responded == true && gameData.p2.responded == true)
+                {
+                    //TODO Ecriture dans le csv : choix + temps de réponse (mise en place d'une clock ?)
+                    printf("(%s) Both clients responded, playing the round %d/%d...\n", roomName, gameData.currentRound, gameData.totalRounds);
+                    gameData = playRound(gameData);
+                    
+                    //Renvoi des structures aux bons clients
+                    if(gameData.p1.idClient == cfgClient.idClient)
+                    {
+                        cfgPlayer = gameData.p1;
+                        send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
                     }
-                } else {
-                    printf("Waiting for both clients (Room: %s)...\n", cfgServer.gameConfig.rooms[i].name);
+                    else
+                    {
+                        cfgPlayer = gameData.p2;
+                        send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
+                    }
+                    //Vérification si le nombre total de manches à été atteint, si oui, affichage du résultat
+                    if(gameData.totalRounds == gameData.currentRound)
+                    {
+                        int idWinner = getWinner(gameData);
+                        if(idWinner == 0)
+                        {
+                            printf("(%s) No winner, game is tied.\n", roomName);
+                        }
+                        else
+                        {
+                            printf("(%s) Winner is client #%d\n", roomName, idWinner);
+                        }
+                        break;
+                    }
+                    printf("(%s) Round %d/%d has successfully been played.\n", roomName, gameData.currentRound, gameData.totalRounds);
                 }
             }
         }
@@ -100,7 +142,7 @@ int create_server_socket(ServerConfig cfgServer) {
     /* create socket */
     sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sockfd <= 0) {
-        fprintf(stderr, "\033[0;31m %s: Error: cannot create socket\033[0m\n");
+        fprintf(stderr, "\033[0;31m Error: cannot create socket\033[0m\n");
         return -3;
     }
 

@@ -42,7 +42,6 @@ GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, Server
         gameData.p2 = cfgPlayer;
     }
 
-    gameData.currentRound = 1;
     gameData.totalRounds = cfgServer.gameConfig.rooms[roomID].nbRounds;
     return gameData;
 }
@@ -52,7 +51,7 @@ GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, Server
 *
 * @param gameData Structure des informations de jeu des clients propre à leur room actuelle
 */
-void playRound(GameData gameData)
+GameData playRound(GameData gameData)
 {
     if (gameData.p1.action == BETRAY)
     { /*Le joueur 1 trahi */
@@ -81,4 +80,23 @@ void playRound(GameData gameData)
         }
     }
     gameData.currentRound += 1;
+    return gameData;
+}
+
+int getWinner(GameData gameData)
+{
+    int idWinner;
+    if(gameData.p1.balance > gameData.p2.balance)
+    {
+        idWinner = gameData.p1.idClient;
+    }
+    else if (gameData.p1.balance < gameData.p2.balance)
+    {
+        idWinner = gameData.p2.idClient;
+    }
+    else if (gameData.p1.balance == gameData.p2.balance)
+    {
+        idWinner = 0;
+    }
+    return idWinner;
 }
