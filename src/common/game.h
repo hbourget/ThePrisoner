@@ -42,5 +42,5 @@ PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, in
 GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int i);
 GameData playRound(GameData gameData);
 int getWinner(GameData gameData);
-
+bool isGameFinished(GameData gameData);
 #endif /* GAME.H */

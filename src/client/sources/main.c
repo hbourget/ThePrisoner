@@ -7,17 +7,15 @@
 #include <arpa/inet.h>
 #include <stdbool.h>
 #include <libconfig.h>
-
 #include<gtk/gtk.h>
-
-GtkBuilder *builder = NULL;
-
 #include "../headers/clientcxnmanager.h"
 #include "../headers/interface.h"
 #include "../../common/config.h"
 
+GtkBuilder *builder = NULL;
+GtkWidget *win;
+
 int main(int argc, char** argv) {
-    GtkWidget *win;
     int status = 0;
     char msg[100];
     pthread_t thread;
@@ -39,7 +37,6 @@ int main(int argc, char** argv) {
     win = GTK_WIDGET(gtk_builder_get_object(builder, "app_win"));
     gtk_builder_connect_signals(builder, NULL);
     gtk_widget_show(win);
-
     gtk_main();
 
     return (EXIT_SUCCESS);

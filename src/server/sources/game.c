@@ -20,6 +20,7 @@ PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, in
     gameSettings.balance = cfgServer.gameConfig.rooms[roomID].bank;
     gameSettings.bet = 0;
     gameSettings.idClient = idClient;
+    gameSettings.responded = false;
     return gameSettings;
 }
 
@@ -67,7 +68,7 @@ GameData playRound(GameData gameData)
         }
     } 
     else if (gameData.p1.action == COOP)
-    { /*Le joueur 2 se tait */
+    { /*Le joueur 1 se tait */
         if (gameData.p2.action == BETRAY)
         { /*Le joueur 2 trahi */
             gameData.p1.balance -= gameData.p1.bet;
@@ -79,6 +80,8 @@ GameData playRound(GameData gameData)
             gameData.p2.balance -= (gameData.p2.bet / 2);
         }
     }
+    gameData.p1.responded = false;
+    gameData.p2.responded = false;
     gameData.currentRound += 1;
     return gameData;
 }
@@ -99,4 +102,14 @@ int getWinner(GameData gameData)
         idWinner = 0;
     }
     return idWinner;
+}
+
+bool isGameFinished(GameData gameData)
+{
+    bool ret = false;
+    if(gameData.totalRounds == gameData.currentRound)
+    {
+        ret = true;
+    }
+    return ret;
 }

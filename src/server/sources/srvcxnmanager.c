@@ -48,14 +48,19 @@ void *threadProcess(void *ptr) {
     ServerConfig cfgServer = initServerCfg();
     ClientConfig cfgClient;
     PlayerGameSettings cfgPlayer;
+    gameData.currentRound = 0;
     int len = 0;
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
     add(connection);
 
-    read(connection->sockfd, &cfgClient, sizeof(cfgClient));
-    printf("Client \033[0;36m#%d\033[0m, is the client number \033[1;37m%i\033[0m to connect.\033[0m\n", cfgClient.idClient, connection->index);
+    //Attend que le client clique sur "Se connecter"
+    while((len = read(connection->sockfd, &cfgClient, sizeof(cfgClient))) > 0)
+    {
+        printf("Client ID \033[0;36m#%d\033[0m has \033[0;32mconnected\033[0m.\n", cfgClient.idClient, connection->index);
+        break;
+    }
 
     for(int i = 0; i < cfgServer.gameConfig.nbRooms; i++) 
     {
@@ -65,7 +70,7 @@ void *threadProcess(void *ptr) {
         {
             //Initialisation de la configuration propre au client qui vient de se connecter.
             cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
-            send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
+            send(connection->sockfd, &gameData, sizeof(gameData), 0);
 
             while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0) 
             {
@@ -74,12 +79,12 @@ void *threadProcess(void *ptr) {
                 //Le serveur bloque dans cette section et attend que deux clients de la même room se connecte.
                 if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0) 
                 {
-                    printf("(%s) Both client have connected.\n", roomName);
+                    printf("(\033[0;33m%s\033[0m) Both client have connected.\n", roomName);
                     break;
                 } 
                 else 
                 {
-                    printf("(%s) Waiting for both clients...\n", roomName);
+                    printf("(\033[0;33m%s\033[0m) Waiting for both clients...\n", roomName);
                 }
             }
             // Une fois les 2 client de la même room connectés, on bloque dans la boucle de jeu ci dessous
@@ -87,16 +92,15 @@ void *threadProcess(void *ptr) {
             {
                 //A la reception d'un envoi du client, hydratation de gameData, notamment pour récupérer le status de réponse.
                 gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
-                printf("(%s) Response status of P1: %d\n", roomName, gameData.p1.responded);
-                printf("(%s) Response status of P2: %d\n", roomName, gameData.p2.responded);
 
                 //Si les deux joueurs on répondu, on joue le round
+                //! MARCHE PAS, TROUVER UNE SOLUTION ! (Seulement le dernier client qui a "Validate" est mis à jour)
                 if(gameData.p1.responded == true && gameData.p2.responded == true)
                 {
-                    //TODO Ecriture dans le csv : choix + temps de réponse (mise en place d'une clock ?)
-                    printf("(%s) Both clients responded, playing the round %d/%d...\n", roomName, gameData.currentRound, gameData.totalRounds);
                     gameData = playRound(gameData);
-                    
+                    printf("(\033[0;33m%s\033[0m) Received data, playing the round %d/%d...\n", roomName, gameData.currentRound, gameData.totalRounds);
+                    printf("Balance of P1: %d\n", gameData.p1.balance);
+                    printf("Balance of P2: %d\n", gameData.p2.balance);
                     //Renvoi des structures aux bons clients
                     if(gameData.p1.idClient == cfgClient.idClient)
                     {
@@ -108,27 +112,30 @@ void *threadProcess(void *ptr) {
                         cfgPlayer = gameData.p2;
                         send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
                     }
-                    //Vérification si le nombre total de manches à été atteint, si oui, affichage du résultat
-                    if(gameData.totalRounds == gameData.currentRound)
+                    printf("(\033[0;33m%s\033[0m) Round %d/%d has successfully been played.\n", roomName, gameData.currentRound, gameData.totalRounds);
+                }
+                
+                //Vérification si le nombre total de manches à été atteint, si oui, affichage du résultat
+                if(isGameFinished(gameData))
+                {
+                    printf("(\033[0;33m%s\033[0m) Received data, game has finished. Drawing results...\n", roomName);
+                    int idWinner = getWinner(gameData);
+                    if(idWinner == 0)
                     {
-                        int idWinner = getWinner(gameData);
-                        if(idWinner == 0)
-                        {
-                            printf("(%s) No winner, game is tied.\n", roomName);
-                        }
-                        else
-                        {
-                            printf("(%s) Winner is client #%d\n", roomName, idWinner);
-                        }
-                        break;
+                        printf("(\033[0;33m%s\033[0m) No winner, game is tied.\n", roomName);
                     }
-                    printf("(%s) Round %d/%d has successfully been played.\n", roomName, gameData.currentRound, gameData.totalRounds);
+                    else
+                    {
+                        printf("(\033[0;33m%s\033[0m) Winner is client #%d\n", roomName, idWinner);
+                    }
+                    //TODO Ecriture dans le csv : choix + temps de réponse (mise en place d'une clock ?)
+                    break;
                 }
             }
         }
     }
 
-    printf("Connection to client \033[0;36m#%d\033[0m has ended.\n", cfgClient.idClient);
+    printf("Client ID \033[0;36m#%d \033[0mhas \033[0;31mdisconnected\033[0m.\n", cfgClient.idClient);
     close(connection->sockfd);
     del(connection);
     free(connection);

@@ -20,6 +20,7 @@ PlayerGameSettings cfgPlayer;
 
 void setCfgPlayer(PlayerGameSettings cfg){
     cfgPlayer = cfg;
+    printf("Balance SetCfg %d\n", cfgPlayer.balance);
 }
 
 void on_window_main_destroy() {
@@ -27,23 +28,26 @@ void on_window_main_destroy() {
     gtk_main_quit();
 }
 
-//CODE NON FONCTIONNEL EN DESSOUS ATTENTION 
-void on_connect_button_click(){
-    /*cfgClient = getClientConfig();
+//Bouton "Se connecter"
+void on_connect_button_click(GtkWidget *widget)
+{
+    cfgClient = getClientConfig();
     sockfd = getClientSockfd();
     write(sockfd, &cfgClient, sizeof(cfgClient));
 
-    printf("\nINTERFACE, ON_BUTTON_CLICK ID CLIENT : %d", cfgPlayer.idClient);
-    write(sockfd, &cfgPlayer, sizeof(cfgPlayer));*/
-    printf("Bouton se connecter clicked!\n");
+    //Desactivation du bouton
+    gtk_widget_set_sensitive(widget, FALSE);
 }
+
 void updateInterface(PlayerGameSettings cfg){
 
 }
 void on_validate_button_click () {
     cfgPlayer.responded = true;
-    printf("Mise choisi %d\n", cfgPlayer.bet);
-    //write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
+    printf("Bet: %d\n", cfgPlayer.bet);
+    printf("Action: %d (1=COOP, 2=BETRAY)\n", cfgPlayer.action);
+    printf("Balance validate: %d\n", cfgPlayer.balance);
+    write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
 }
 void on_leave_button_click(GtkWidget *widget){
     printf("Quitting..\n ");
