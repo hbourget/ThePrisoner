@@ -41,6 +41,7 @@ void updateInterface(PlayerGameSettings cfg){
 
 }
 void on_validate_button_click () {
+    cfgPlayer.responded = true;
     printf("Mise choisi %d\n", cfgPlayer.bet);
     //write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
 }
