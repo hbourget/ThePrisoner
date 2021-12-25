@@ -17,6 +17,7 @@
 ClientConfig cfgClient;
 int sockfd;
 PlayerGameSettings cfgPlayer;
+GtkBuilder *build;
 
 void setCfgPlayer(PlayerGameSettings cfg){
     cfgPlayer = cfg;
@@ -26,29 +27,110 @@ void on_window_main_destroy() {
     printf("Quitting..\n ");
     gtk_main_quit();
 }
+/**
+ * @brief Set the builder object
+ * 
+ * @param builder 
+ */
+void set_builder(GtkBuilder *builder){
+    build = builder;
+}
+
+/**
+ * @brief Met à jour les différents labels pour avoir les informations de jeux en temps réel, 
+ * comme le solde courant, le dernier résultat ou l'information de qui doit jouer.
+ */
+// void update_label(){
+//     char status_label_connection[100];
+//     char statement_label[100];
+//     // Définition de pointer vers les différents labels
+    
+//     GtkLabel *statement_label = GTK_LABEL(gtk_builder_get_object(build, "statement_label"));
+
+//     // Mise à jour du statement_label
+//     snprintf(statement, 100, "%d", 2);
+//     gtk_label_set_text(statement_label, statement);
+// }
 
 //Bouton "Se connecter"
 void on_connect_button_click(GtkWidget *widget)
 {
+    //Définition d'un pointeur sur le label de connexion
+    GtkLabel *status = GTK_LABEL(gtk_builder_get_object(build, "status_label_connection"));
+    GtkLabel *statement_label = GTK_LABEL(gtk_builder_get_object(build, "statement_label"));
+
     cfgClient = getClientConfig();
     sockfd = getClientSockfd();
     write(sockfd, &cfgClient, sizeof(cfgClient));
 
     //Desactivation du bouton
     gtk_widget_set_sensitive(widget, FALSE);
+    
+    // Mise à jour du label de status de connexion.
+    gtk_label_set_text(status, "You are connected !");
+    gtk_label_set_text(statement_label, "It's up to you!");
+
+    enable_check_button();
+}
+/**
+ * @brief Active les checkbuttons de l'interface
+ * 
+ */
+void enable_check_button(){
+    // Définition des pointeurs sur les CheckButton.
+    GtkCheckButton *betray = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "betray"));
+    GtkCheckButton *cooperate = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "cooperate"));
+
+    GtkCheckButton *ten = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox10"));
+    GtkCheckButton *twenty_five = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox25"));
+    GtkCheckButton *fifty = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox50"));
+    GtkCheckButton *one_hundred = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox100"));
+
+    // Activation des boutons.
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(betray), true);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cooperate), true);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ten), true);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(twenty_five), true);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(fifty), true);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(one_hundred), true);
+}
+/**
+ * @brief Désactive les checkbuttons de l'interface
+ * 
+ */
+void disable_check_button(){
+    // Définition des pointeurs sur les CheckButton.
+    GtkCheckButton *betray = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "betray"));
+    GtkCheckButton *cooperate = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "cooperate"));
+
+    GtkCheckButton *ten = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox10"));
+    GtkCheckButton *twenty_five = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox25"));
+    GtkCheckButton *fifty = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox50"));
+    GtkCheckButton *one_hundred = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox100"));
+
+    // Désactivation des boutons.
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(betray), false);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cooperate), false);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ten), false);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(twenty_five), false);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(fifty), false);
+    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(one_hundred), false);
 }
 
-void updateInterface(PlayerGameSettings cfg){
-
-}
 void on_validate_button_click () {
+    GtkLabel *statement_label = GTK_LABEL(gtk_builder_get_object(build, "statement_label"));
+
     cfgPlayer.responded = true;
     printf("Bet: %d\n", cfgPlayer.bet);
     printf("Action: %d (1=COOP, 2=BETRAY)\n", cfgPlayer.action);
     write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
+    cfgPlayer.responded = false;
+
+    gtk_label_set_text(statement_label, "You have played !");
+    disable_check_button();
 }
 void on_leave_button_click(GtkWidget *widget){
-    printf("Quitting..\n ");
+    printf("Closing of the application !\n");
     gtk_main_quit();
 }
 void on_toggled_cooperate(){

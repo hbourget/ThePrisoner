@@ -9,6 +9,7 @@
 #include <libconfig.h>
 
 #include "../headers/clientcxnmanager.h"
+#include "../headers/interface.h"
 #include "../../common/config.h"
 #include "../../common/game.h"
 
@@ -49,6 +50,7 @@ void *threadProcess(void * ptr) {
 
     while((len = read(sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
     {
+        enable_check_button();
         break;
     }
     setCfgPlayer(cfgPlayer);

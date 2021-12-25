@@ -3,9 +3,12 @@
 
 #include <gtk/gtk.h>
 
+void set_builder(GtkBuilder *builder);
 void setCfgPlayer(PlayerGameSettings cfg);
 PlayerGameSettings getCfgPlayer();
 void on_window_main_destroy();
+void enable_check_button();
+void disable_check_button();
 void on_connect_button_click();
 void on_validate_button_click();
 void on_leave_button_click(GtkWidget *widget);
