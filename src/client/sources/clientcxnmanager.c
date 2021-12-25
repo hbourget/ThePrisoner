@@ -9,6 +9,7 @@
 #include <libconfig.h>
 
 #include "../headers/clientcxnmanager.h"
+#include "../headers/interface.h"
 #include "../../common/config.h"
 #include "../../common/game.h"
 

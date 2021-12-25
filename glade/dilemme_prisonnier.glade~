@@ -5,32 +5,32 @@
   <object class="GtkImage" id="10">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/10$.png</property>
+    <property name="pixbuf">img/10$.png</property>
   </object>
   <object class="GtkImage" id="100">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/100$.png</property>
+    <property name="pixbuf">img/100$.png</property>
   </object>
   <object class="GtkImage" id="25">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/25$.png</property>
+    <property name="pixbuf">img/25$.png</property>
   </object>
   <object class="GtkImage" id="50">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/50$.png</property>
+    <property name="pixbuf">img/50$.png</property>
   </object>
   <object class="GtkImage" id="betray">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/knife.png</property>
+    <property name="pixbuf">img/knife.png</property>
   </object>
   <object class="GtkImage" id="cooperate">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/support.png</property>
+    <property name="pixbuf">img/support.png</property>
   </object>
   <object class="GtkApplicationWindow" id="app_win">
     <property name="can-focus">False</property>
@@ -57,19 +57,51 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="connect_socket">
-            <property name="label" translatable="yes">Se connecter</property>
+          <object class="GtkLevelBar" id="time1">
             <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="margin-bottom">25</property>
-            <signal name="clicked" handler="on_connect_button_click" swapped="no"/>
+            <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="max-value">15.000000000223517</property>
+            <property name="mode">discrete</property>
           </object>
           <packing>
             <property name="expand">True</property>
             <property name="fill">False</property>
-            <property name="padding">20</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="status_label_connection">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">You are not connected !</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Bold 16"/>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">3</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="client_id_label">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">ID Client :</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Bold 16"/>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">3</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -93,7 +125,6 @@
                     <property name="image">10</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
-                    <signal name="toggled" handler="on_toggled_10" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -109,7 +140,6 @@
                     <property name="image">25</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
-                    <signal name="toggled" handler="on_toggled_25" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -125,7 +155,6 @@
                     <property name="image">50</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
-                    <signal name="toggled" handler="on_toggled_50" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">2</property>
@@ -141,7 +170,6 @@
                     <property name="image">100</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
-                    <signal name="toggled" handler="on_toggled_100" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">3</property>
@@ -176,7 +204,7 @@
                 <property name="can-focus">False</property>
                 <property name="halign">center</property>
                 <child>
-                  <object class="GtkCheckButton" id="etray">
+                  <object class="GtkCheckButton" id="betra">
                     <property name="label" translatable="yes">betray</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
@@ -184,7 +212,6 @@
                     <property name="image">betray</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
-                    <signal name="toggled" handler="on_toggled_betray" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -201,7 +228,6 @@
                     <property name="image">cooperate</property>
                     <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
-                    <signal name="toggled" handler="on_toggled_cooperate" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -221,7 +247,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
@@ -231,7 +257,21 @@
             <property name="halign">center</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkButton" id="validate">
+              <object class="GtkButton" id="Connection">
+                <property name="label" translatable="yes">Connection</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_connect_button_click" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="Validate">
                 <property name="label" translatable="yes">Validate</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
@@ -241,12 +281,12 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">False</property>
-                <property name="padding">20</property>
-                <property name="position">0</property>
+                <property name="padding">15</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="leave">
+              <object class="GtkButton" id="Leave">
                 <property name="label" translatable="yes">Leave</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
@@ -254,18 +294,37 @@
                 <signal name="clicked" handler="on_leave_button_click" swapped="no"/>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="statement_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Waiting for instruction .. </property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 15"/>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack-type">end</property>
-                <property name="position">1</property>
+                <property name="padding">14</property>
+                <property name="position">3</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
             <property name="expand">True</property>
             <property name="fill">False</property>
             <property name="padding">20</property>
-            <property name="position">3</property>
+            <property name="position">5</property>
           </packing>
         </child>
       </object>
