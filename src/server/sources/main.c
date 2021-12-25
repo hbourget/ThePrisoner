@@ -23,9 +23,13 @@
 
 #include "../headers/srvcxnmanager.h"
 #include "../../common/config.h"
+#include "../../common/game.h"
 
 int main(int argc, char** argv) 
 {
+    // Création et mise en place de l'entête du fichier results.csv.
+    writeHeader();
+
     ServerConfig cfgServer = initServerCfg();
 
     showServerConfig(cfgServer);
