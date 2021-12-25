@@ -6,38 +6,34 @@
 #include "../../common/game.h"
 #include "../../common/config.h"
 
+/**
+* @brief Instanciation du PlayerGameSettings pour le client x appartenant à la room x
+*
+* @param cfgServer Configuration du serveur
+* @param roomID ID de la room
+* @param idClient ID du client
+*/
 PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, int idClient) {
     PlayerGameSettings gameSettings;
 
-    // gameSettings = (PlayerGameSettings)malloc(sizeof(PlayerGameSettings));
-    gameSettings.action = SILENCE;
-    gameSettings.balance = cfgServer.gameConfig.rooms[roomID].bank;
+    gameSettings.action = START;
     gameSettings.bet = 0;
-    gameSettings.currentR = 1;
-    gameSettings.totalR = cfgServer.gameConfig.rooms[roomID].nbRounds;
-    gameSettings.responded = false;
     gameSettings.idClient = idClient;
+    gameSettings.responded = false;
     return gameSettings;
 }
 
-GameData hydrateData(GameData gameData, PlayerGameSettings cfgPlayer)
+/**
+* @brief Instanciation du PlayerGameSettings pour le client x appartenant à la room x à la connexion
+*
+* @param cfgPlayer Configuration du PlayerGameSettings
+* @param gameData Structure des informations de jeu des clients propre à leur room actuelle
+* @param cfgServer Configuration du serveur
+* @param roomID ID de la room
+*/
+GameData firstHydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int roomID)
 {
-    if(gameData.p1.idClient == cfgPlayer.idClient)
-    {
-        gameData.p1 = cfgPlayer;
-    }
-    else if (gameData.p2.idClient == cfgPlayer.idClient)
-    {
-        gameData.p2 = cfgPlayer;
-    }
-
-    return gameData;
-}
-
-GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int i)
-{
-
-    if(cfgServer.gameConfig.rooms[i].idClient_1 == cfgPlayer.idClient)
+    if(cfgServer.gameConfig.rooms[roomID].idClient_1 == cfgPlayer.idClient)
     {
         gameData.p1 = cfgPlayer;
     }
@@ -45,54 +41,99 @@ GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, Server
     {
         gameData.p2 = cfgPlayer;
     }
+    gameData.currentRound = 0;
+    gameData.totalRounds = cfgServer.gameConfig.rooms[roomID].nbRounds;
+    gameData.bal_p1 = cfgServer.gameConfig.rooms[roomID].bank;
+    gameData.bal_p2 = cfgServer.gameConfig.rooms[roomID].bank;
     return gameData;
 }
 
-void playRound(PlayerGameSettings p1_gameSettings, PlayerGameSettings p2_gameSettings)
+/**
+* @brief Instanciation du PlayerGameSettings pour le client x appartenant à la room x lors du jeu
+*
+* @param cfgPlayer Configuration du PlayerGameSettings
+* @param gameData Structure des informations de jeu des clients propre à leur room actuelle
+* @param cfgServer Configuration du serveur
+* @param roomID ID de la room
+*/
+GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int roomID)
 {
-    //Retourne vrai si currentR <= totalR pour les 2 gameSettings et ajoute 1 à currentR pour chaque gameSettings
-    if(nextround(p1_gameSettings, p2_gameSettings))
+    if(cfgServer.gameConfig.rooms[roomID].idClient_1 == cfgPlayer.idClient)
     {
-        if (p1_gameSettings.action == BETRAY)
-        { /*Le joueur 1 trahi */
-            if (p2_gameSettings.action == BETRAY)
-            { /*Le joueur 2 trahi */
-                p1_gameSettings.balance -= p1_gameSettings.bet;
-                p2_gameSettings.balance -= p2_gameSettings.bet;
-            }
-            if(p2_gameSettings.action == COOP)
-            { /*Le joueur 2 se tait */
-                p1_gameSettings.balance += p1_gameSettings.bet;
-                p2_gameSettings.balance -= p2_gameSettings.bet;
-            }
-        } 
-        else if (p1_gameSettings.action == COOP)
+        gameData.p1 = cfgPlayer;
+    }
+    else
+    {
+        gameData.p2 = cfgPlayer;
+    }
+
+    gameData.totalRounds = cfgServer.gameConfig.rooms[roomID].nbRounds;
+    return gameData;
+}
+
+/**
+* @brief Algorithme de traitement des données envoyées par les clients
+*
+* @param gameData Structure des informations de jeu des clients propre à leur room actuelle
+*/
+GameData playRound(GameData gameData)
+{
+    if (gameData.p1.action == BETRAY)
+    { /*Le joueur 1 trahi */
+        if (gameData.p2.action == BETRAY)
+        { /*Le joueur 2 trahi */
+            gameData.bal_p1 -= gameData.p1.bet;
+            gameData.bal_p2 -= gameData.p2.bet;
+        }
+        if(gameData.p2.action == COOP)
         { /*Le joueur 2 se tait */
-            if (p2_gameSettings.action == BETRAY)
-            { /*Le joueur 2 trahi */
-                p1_gameSettings.balance -= p1_gameSettings.bet;
-                p2_gameSettings.balance += p2_gameSettings.bet;
-            }
-            if(p2_gameSettings.action == COOP)
-            { /*Le joueur 2 se tait */
-                p1_gameSettings.balance -= (p1_gameSettings.bet / 2);
-                p2_gameSettings.balance -= (p2_gameSettings.bet / 2);
-            }
+            gameData.bal_p1 += gameData.p1.bet;
+            gameData.bal_p2 -= gameData.p2.bet;
+        }
+    } 
+    else if (gameData.p1.action == COOP)
+    { /*Le joueur 1 se tait */
+        if (gameData.p2.action == BETRAY)
+        { /*Le joueur 2 trahi */
+            gameData.bal_p1 -= gameData.p1.bet;
+            gameData.bal_p2 += gameData.p2.bet;
+        }
+        if(gameData.p2.action == COOP)
+        { /*Le joueur 2 se tait */
+            gameData.bal_p1 -= (gameData.p1.bet / 2);
+            gameData.bal_p2 -= (gameData.p2.bet / 2);
         }
     }
+    gameData.p1.responded = false;
+    gameData.p2.responded = false;
+    gameData.currentRound += 1;
+    return gameData;
 }
 
-bool nextround(PlayerGameSettings p1_gameSettings, PlayerGameSettings p2_gameSettings)
+int getWinner(GameData gameData)
 {
-    bool ret = true;
-    if(p1_gameSettings.currentR <=  p1_gameSettings.totalR && p2_gameSettings.currentR <=  p2_gameSettings.totalR)
+    int idWinner;
+    if(gameData.bal_p1 > gameData.bal_p2)
     {
-        p1_gameSettings.currentR += 1;
-        p2_gameSettings.currentR += 1;
+        idWinner = gameData.p1.idClient;
     }
-    else
+    else if (gameData.bal_p1 < gameData.bal_p2)
     {
-        ret = false;
+        idWinner = gameData.p2.idClient;
+    }
+    else if (gameData.bal_p1 == gameData.bal_p2)
+    {
+        idWinner = 0;
+    }
+    return idWinner;
+}
+
+bool isGameFinished(GameData gameData)
+{
+    bool ret = false;
+    if(gameData.totalRounds == gameData.currentRound)
+    {
+        ret = true;
     }
     return ret;
 }
