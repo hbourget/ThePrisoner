@@ -150,7 +150,7 @@ bool isGameFinished(GameData gameData)
 void writeResults(const char *RoomName, GameData gameData){
     FILE *fpt;
 
-    if((fpt = fopen("build/results.csv", "a+")) == NULL) {
+    if((fpt = fopen("results.csv", "a+")) == NULL) {
         fprintf(fpt,"Nom de Room, Round, ID Client, Mise, Choix, Balance actuel\n");
     }
 
@@ -171,14 +171,4 @@ void writeResults(const char *RoomName, GameData gameData){
     }
     fclose(fpt);
     printf("Choice of players recorded!\n\n");
-}
-/**
- * @brief Ajoute un séparateur entre chaque lot d'enregistrement de données de jeux.
- * 
- */
-void writeSeparator(){
-    FILE *fpt;
-    fpt = fopen("build/results.csv", "a+");
-    fprintf(fpt, "\n\n\n New game report :\n");
-    fclose(fpt);
 }

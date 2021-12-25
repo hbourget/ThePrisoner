@@ -124,7 +124,6 @@ void *threadProcess(void *ptr) {
                     {
                         printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;32m#%d\033[0m.\n", roomName, idWinner);
                     }
-                    writeSeparator();
                     break;
                 }
             }
