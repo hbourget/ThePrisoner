@@ -58,7 +58,7 @@ void *threadProcess(void *ptr) {
     //Attend que le client clique sur "Se connecter"
     while((len = read(connection->sockfd, &cfgClient, sizeof(cfgClient))) > 0)
     {
-        printf("Client ID \033[0;36m#%d\033[0m has \033[0;32mconnected\033[0m.\n", cfgClient.idClient, connection->index);
+        printf("Client \033[0;36m#%d\033[0m has \033[0;32mconnected\033[0m.\n", cfgClient.idClient, connection->index);
         break;
     }
 
@@ -70,21 +70,21 @@ void *threadProcess(void *ptr) {
         {
             //Initialisation de la configuration propre au client qui vient de se connecter.
             cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
-            send(connection->sockfd, &gameData, sizeof(gameData), 0);
+            send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
 
             while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0) 
             {
-                gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
+                gameData = firstHydrateGameData(cfgPlayer, gameData, cfgServer, i);
 
                 //Le serveur bloque dans cette section et attend que deux clients de la même room se connecte.
                 if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0) 
                 {
-                    printf("(\033[0;33m%s\033[0m) Both client have connected.\n", roomName);
+                    printf("(\033[0;33mRoom %s\033[0m) Both client have connected.\n", roomName);
                     break;
                 } 
                 else 
                 {
-                    printf("(\033[0;33m%s\033[0m) Waiting for both clients...\n", roomName);
+                    printf("(\033[0;33mRoom %s\033[0m) Waiting for both clients...\n", roomName);
                 }
             }
             // Une fois les 2 client de la même room connectés, on bloque dans la boucle de jeu ci dessous
@@ -94,52 +94,45 @@ void *threadProcess(void *ptr) {
                 gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
 
                 //Si les deux joueurs on répondu, on joue le round
-                //! MARCHE PAS, TROUVER UNE SOLUTION ! (Seulement le dernier client qui a "Validate" est mis à jour)
                 if(gameData.p1.responded == true && gameData.p2.responded == true)
                 {
                     gameData = playRound(gameData);
-                    printf("(\033[0;33m%s\033[0m) Received data, playing the round %d/%d...\n", roomName, gameData.currentRound, gameData.totalRounds);
-                    printf("Balance of P1: %d\n", gameData.p1.balance);
-                    printf("Balance of P2: %d\n", gameData.p2.balance);
-                    //Renvoi des structures aux bons clients
-                    if(gameData.p1.idClient == cfgClient.idClient)
-                    {
-                        cfgPlayer = gameData.p1;
-                        send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
-                    }
-                    else
-                    {
-                        cfgPlayer = gameData.p2;
-                        send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
-                    }
-                    printf("(\033[0;33m%s\033[0m) Round %d/%d has successfully been played.\n", roomName, gameData.currentRound, gameData.totalRounds);
+                    printf("(\033[0;33mRoom %s\033[0m) Playing round %d/%d...\n", roomName, gameData.currentRound, gameData.totalRounds);
+                    printf("(\033[0;33mRoom %s\033[0m) P1 action: %d (1=BETRAY, 2=COOP)\n", roomName, gameData.p1.action);
+                    printf("(\033[0;33mRoom %s\033[0m) P2 action: %d (1=BETRAY, 2=COOP)\n", roomName, gameData.p2.action);
+                    printf("(\033[0;33mRoom %s\033[0m) P1 bet: %d\n", roomName, gameData.p1.bet);
+                    printf("(\033[0;33mRoom %s\033[0m) P2 bet: %d\n", roomName, gameData.p2.bet);
+                    printf("\n");
+                    printf("(\033[0;33mRoom %s\033[0m) Balance of P1: %d\n", roomName, gameData.bal_p1);
+                    printf("(\033[0;33mRoom %s\033[0m) Balance of P2: %d\n", roomName, gameData.bal_p2);
+                    printf("(\033[0;33mRoom %s\033[0m) Round %d/%d has successfully been played.\n\n", roomName, gameData.currentRound, gameData.totalRounds);
                 }
                 
                 //Vérification si le nombre total de manches à été atteint, si oui, affichage du résultat
                 if(isGameFinished(gameData))
                 {
-                    printf("(\033[0;33m%s\033[0m) Received data, game has finished. Drawing results...\n", roomName);
+                    printf("(\033[0;33mRoom %s\033[0m) Game has finished. Drawing results...\n", roomName);
                     int idWinner = getWinner(gameData);
                     if(idWinner == 0)
                     {
-                        printf("(\033[0;33m%s\033[0m) No winner, game is tied.\n", roomName);
+                        printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;35mTIE\033[0m).\n", roomName);
                     }
                     else
                     {
-                        printf("(\033[0;33m%s\033[0m) Winner is client #%d\n", roomName, idWinner);
+                        printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;32m#%d\033[0m.\n", roomName, idWinner);
                     }
-                    //TODO Ecriture dans le csv : choix + temps de réponse (mise en place d'une clock ?)
+                    // TODO Ecriture dans le csv : choix + temps de réponse (mise en place d'une clock ?)
                     break;
                 }
             }
         }
     }
 
-    printf("Client ID \033[0;36m#%d \033[0mhas \033[0;31mdisconnected\033[0m.\n", cfgClient.idClient);
+    /*printf("Client \033[0;36m#%d \033[0mhas \033[0;31mdisconnected\033[0m.\n", cfgClient.idClient);
     close(connection->sockfd);
     del(connection);
     free(connection);
-    pthread_exit(0);
+    pthread_exit(0);*/
 }
 
 int create_server_socket(ServerConfig cfgServer) {

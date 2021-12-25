@@ -17,7 +17,6 @@ PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, in
     PlayerGameSettings gameSettings;
 
     gameSettings.action = START;
-    gameSettings.balance = cfgServer.gameConfig.rooms[roomID].bank;
     gameSettings.bet = 0;
     gameSettings.idClient = idClient;
     gameSettings.responded = false;
@@ -25,7 +24,32 @@ PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, in
 }
 
 /**
-* @brief Instanciation du PlayerGameSettings pour le client x appartenant à la room x
+* @brief Instanciation du PlayerGameSettings pour le client x appartenant à la room x à la connexion
+*
+* @param cfgPlayer Configuration du PlayerGameSettings
+* @param gameData Structure des informations de jeu des clients propre à leur room actuelle
+* @param cfgServer Configuration du serveur
+* @param roomID ID de la room
+*/
+GameData firstHydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int roomID)
+{
+    if(cfgServer.gameConfig.rooms[roomID].idClient_1 == cfgPlayer.idClient)
+    {
+        gameData.p1 = cfgPlayer;
+    }
+    else
+    {
+        gameData.p2 = cfgPlayer;
+    }
+    gameData.currentRound = 0;
+    gameData.totalRounds = cfgServer.gameConfig.rooms[roomID].nbRounds;
+    gameData.bal_p1 = cfgServer.gameConfig.rooms[roomID].bank;
+    gameData.bal_p2 = cfgServer.gameConfig.rooms[roomID].bank;
+    return gameData;
+}
+
+/**
+* @brief Instanciation du PlayerGameSettings pour le client x appartenant à la room x lors du jeu
 *
 * @param cfgPlayer Configuration du PlayerGameSettings
 * @param gameData Structure des informations de jeu des clients propre à leur room actuelle
@@ -58,26 +82,26 @@ GameData playRound(GameData gameData)
     { /*Le joueur 1 trahi */
         if (gameData.p2.action == BETRAY)
         { /*Le joueur 2 trahi */
-            gameData.p1.balance -= gameData.p1.bet;
-            gameData.p2.balance -= gameData.p2.bet;
+            gameData.bal_p1 -= gameData.p1.bet;
+            gameData.bal_p2 -= gameData.p2.bet;
         }
         if(gameData.p2.action == COOP)
         { /*Le joueur 2 se tait */
-            gameData.p1.balance += gameData.p1.bet;
-            gameData.p2.balance -= gameData.p2.bet;
+            gameData.bal_p1 += gameData.p1.bet;
+            gameData.bal_p2 -= gameData.p2.bet;
         }
     } 
     else if (gameData.p1.action == COOP)
     { /*Le joueur 1 se tait */
         if (gameData.p2.action == BETRAY)
         { /*Le joueur 2 trahi */
-            gameData.p1.balance -= gameData.p1.bet;
-            gameData.p2.balance += gameData.p2.bet;
+            gameData.bal_p1 -= gameData.p1.bet;
+            gameData.bal_p2 += gameData.p2.bet;
         }
         if(gameData.p2.action == COOP)
         { /*Le joueur 2 se tait */
-            gameData.p1.balance -= (gameData.p1.bet / 2);
-            gameData.p2.balance -= (gameData.p2.bet / 2);
+            gameData.bal_p1 -= (gameData.p1.bet / 2);
+            gameData.bal_p2 -= (gameData.p2.bet / 2);
         }
     }
     gameData.p1.responded = false;
@@ -89,15 +113,15 @@ GameData playRound(GameData gameData)
 int getWinner(GameData gameData)
 {
     int idWinner;
-    if(gameData.p1.balance > gameData.p2.balance)
+    if(gameData.bal_p1 > gameData.bal_p2)
     {
         idWinner = gameData.p1.idClient;
     }
-    else if (gameData.p1.balance < gameData.p2.balance)
+    else if (gameData.bal_p1 < gameData.bal_p2)
     {
         idWinner = gameData.p2.idClient;
     }
-    else if (gameData.p1.balance == gameData.p2.balance)
+    else if (gameData.bal_p1 == gameData.bal_p2)
     {
         idWinner = 0;
     }

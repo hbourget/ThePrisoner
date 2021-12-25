@@ -20,7 +20,6 @@ PlayerGameSettings cfgPlayer;
 
 void setCfgPlayer(PlayerGameSettings cfg){
     cfgPlayer = cfg;
-    printf("Balance SetCfg %d\n", cfgPlayer.balance);
 }
 
 void on_window_main_destroy() {
@@ -46,7 +45,6 @@ void on_validate_button_click () {
     cfgPlayer.responded = true;
     printf("Bet: %d\n", cfgPlayer.bet);
     printf("Action: %d (1=COOP, 2=BETRAY)\n", cfgPlayer.action);
-    printf("Balance validate: %d\n", cfgPlayer.balance);
     write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
 }
 void on_leave_button_click(GtkWidget *widget){

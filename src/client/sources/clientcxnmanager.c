@@ -43,7 +43,6 @@ int getClientSockfd(){
 
 void *threadProcess(void * ptr) {
     PlayerGameSettings cfgPlayer;
-    ClientConfig cfgClient = initClientCfg();
     int sockfd = *((int *) ptr), len = 0;
 
     //Lecture de la configuration initiale du joueur
@@ -54,12 +53,6 @@ void *threadProcess(void * ptr) {
     }
     setCfgPlayer(cfgPlayer);
     write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
-
-    // Lecture des configurations du joueur
-    while ((len = read(sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
-    {
-        setCfgPlayer(cfgPlayer);
-    }
 
     //close(sockfd);
     //printf("client pthread ended, len=%d\n", len);
