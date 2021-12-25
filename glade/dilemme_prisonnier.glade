@@ -5,32 +5,32 @@
   <object class="GtkImage" id="10">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/10$.png</property>
+    <property name="pixbuf">img/10$.png</property>
   </object>
   <object class="GtkImage" id="100">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/100$.png</property>
+    <property name="pixbuf">img/100$.png</property>
   </object>
   <object class="GtkImage" id="25">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/25$.png</property>
+    <property name="pixbuf">img/25$.png</property>
   </object>
   <object class="GtkImage" id="50">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/50$.png</property>
+    <property name="pixbuf">img/50$.png</property>
   </object>
   <object class="GtkImage" id="betray">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/knife.png</property>
+    <property name="pixbuf">img/knife.png</property>
   </object>
   <object class="GtkImage" id="cooperate">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="pixbuf">../img/support.png</property>
+    <property name="pixbuf">img/support.png</property>
   </object>
   <object class="GtkApplicationWindow" id="app_win">
     <property name="can-focus">False</property>
