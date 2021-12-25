@@ -46,4 +46,6 @@ GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, Server
 GameData playRound(GameData gameData);
 int getWinner(GameData gameData);
 bool isGameFinished(GameData gameData);
+void writeResults(const char *RoomName, GameData gameData);
+void writeSeparator();
 #endif /* GAME.H */
