@@ -36,31 +36,26 @@ void set_builder(GtkBuilder *builder){
     build = builder;
 }
 
+
 /**
- * @brief Met à jour les différents labels pour avoir les informations de jeux en temps réel, 
- * comme le solde courant, le dernier résultat ou l'information de qui doit jouer.
+ * @brief Ecouteurs d'évènemment sur le bouton de connection.
+ * 
+ * @param widget 
  */
-// void update_label(){
-//     char status_label_connection[100];
-//     char statement_label[100];
-//     // Définition de pointer vers les différents labels
-    
-//     GtkLabel *statement_label = GTK_LABEL(gtk_builder_get_object(build, "statement_label"));
-
-//     // Mise à jour du statement_label
-//     snprintf(statement, 100, "%d", 2);
-//     gtk_label_set_text(statement_label, statement);
-// }
-
-//Bouton "Se connecter"
 void on_connect_button_click(GtkWidget *widget)
 {
     //Définition d'un pointeur sur le label de connexion
     GtkLabel *status = GTK_LABEL(gtk_builder_get_object(build, "status_label_connection"));
     GtkLabel *statement_label = GTK_LABEL(gtk_builder_get_object(build, "statement_label"));
+    GtkLabel *id_client = GTK_LABEL(gtk_builder_get_object(build, "client_id_label"));
 
     cfgClient = getClientConfig();
     sockfd = getClientSockfd();
+
+    int id = cfgClient.idClient;
+    char base[20];
+    sprintf(base, "ID Client : %d", id);
+
     write(sockfd, &cfgClient, sizeof(cfgClient));
 
     //Desactivation du bouton
@@ -69,30 +64,7 @@ void on_connect_button_click(GtkWidget *widget)
     // Mise à jour du label de status de connexion.
     gtk_label_set_text(status, "You are connected !");
     gtk_label_set_text(statement_label, "It's up to you!");
-
-    enable_check_button();
-}
-/**
- * @brief Active les checkbuttons de l'interface
- * 
- */
-void enable_check_button(){
-    // Définition des pointeurs sur les CheckButton.
-    GtkCheckButton *betray = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "betray"));
-    GtkCheckButton *cooperate = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "cooperate"));
-
-    GtkCheckButton *ten = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox10"));
-    GtkCheckButton *twenty_five = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox25"));
-    GtkCheckButton *fifty = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox50"));
-    GtkCheckButton *one_hundred = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox100"));
-
-    // Activation des boutons.
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(betray), true);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cooperate), true);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ten), true);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(twenty_five), true);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(fifty), true);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(one_hundred), true);
+    gtk_label_set_text(id_client, base);
 }
 /**
  * @brief Désactive les checkbuttons de l'interface
@@ -100,8 +72,8 @@ void enable_check_button(){
  */
 void disable_check_button(){
     // Définition des pointeurs sur les CheckButton.
-    GtkCheckButton *betray = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "betray"));
-    GtkCheckButton *cooperate = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "cooperate"));
+    GtkCheckButton *betray = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "betra"));
+    GtkCheckButton *cooperate = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "ooperate"));
 
     GtkCheckButton *ten = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox10"));
     GtkCheckButton *twenty_five = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox25"));
@@ -109,14 +81,17 @@ void disable_check_button(){
     GtkCheckButton *one_hundred = GTK_CHECK_BUTTON(gtk_builder_get_object(build, "checkbox100"));
 
     // Désactivation des boutons.
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(betray), false);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cooperate), false);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ten), false);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(twenty_five), false);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(fifty), false);
-    // gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(one_hundred), false);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(betray), false);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cooperate), false);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ten), false);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(twenty_five), false);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(fifty), false);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(one_hundred), false);
 }
-
+/**
+ * @brief Permet d'envoyer ces choix au serveur. 
+ * 
+ */
 void on_validate_button_click () {
     GtkLabel *statement_label = GTK_LABEL(gtk_builder_get_object(build, "statement_label"));
 

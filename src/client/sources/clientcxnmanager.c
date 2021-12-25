@@ -50,7 +50,6 @@ void *threadProcess(void * ptr) {
 
     while((len = read(sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
     {
-        enable_check_button();
         break;
     }
     setCfgPlayer(cfgPlayer);

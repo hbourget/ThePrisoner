@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "interface.h": "c"
+        "interface.h": "c",
+        "clientcxnmanager.h": "c",
+        "typeinfo": "c"
     }
 }
