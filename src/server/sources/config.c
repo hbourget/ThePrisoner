@@ -3,10 +3,12 @@
 #include <libconfig.h>
 #include "../../common/config.h"
 
+/**
+* @brief Initialisation de la configuration du serveur à partir de son fichier (server.config)
+*/
 ServerConfig initServerCfg()
 {
   config_t cfg;
-
   config_init(&cfg);
 
   // Lit le fichier, si il y a une erreur, affichage + destruction.
@@ -54,12 +56,17 @@ ServerConfig initServerCfg()
   return cfgServer;
 }
 
-
+/**
+* @brief Affichage console de la configuration du serveur
+*/
 void showServerConfig(ServerConfig cfgServer)
 {
     printf("\n\033[0;36m--------------------------\n\033[1;36m SERVER CONFIGURATION\n \n\033[1;37m - IP Address: \033[0;36m%s \n\033[1;37m - Port: \033[0;36m%d \n\033[0;36m--------------------------\n", cfgServer.serverIP, cfgServer.serverPort);
 }
 
+/**
+* @brief Affichage console de la configuration des rooms
+*/
 void showRooms(ServerConfig cfgServer)
 {
     printf("\n\033[0;36m--------------------------\n\033[1;36m ROOMS CONFIGURATION\n");

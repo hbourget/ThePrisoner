@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <pthread.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -13,28 +12,57 @@
 #include "../../common/config.h"
 #include "../../common/game.h"
 
-PlayerGameSettings pgm;
+GameData gameData;
+
+InterfaceParams interfaceParams;
+
+/**
+* @brief Affectation des valeurs à la structure InterfaceParams
+*
+* @param sockfd Socket générer grâce au donner du fichier client.config
+* @param cfgClient Configuration client
+*/
+void setInterfaceParams(int socket, ClientConfig config){
+    interfaceParams.sockfd = socket;
+    interfaceParams.cfgClient = config;
+}
+
+/**
+* @brief Récupération de l'attribut cfgClient de la structure InterfaceParams
+*/
+ClientConfig getClientConfig(){
+    return interfaceParams.cfgClient;
+}
+
+/**
+* @brief Récupération de l'attribut sockfd de la structure InterfaceParams
+*/
+int getClientSockfd(){
+    return interfaceParams.sockfd;
+}
 
 void *threadProcess(void * ptr) {
     PlayerGameSettings cfgPlayer;
-    ClientConfig cfgClient = initClientCfg();
-    int sockfd = *((int *) ptr);
+    int sockfd = *((int *) ptr), len = 0;
 
-    //Envoi de la configuration client au serveur
-    write(sockfd, &cfgClient, sizeof(cfgClient));
     //Lecture de la configuration initiale du joueur
-    read(sockfd, &cfgPlayer, sizeof(cfgPlayer));
-    printf("%d", cfgPlayer.idClient);
 
-    //cfgPlayer.bet = 200;
-    //write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
-
-    //while ((len = read(sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0);
+    while((len = read(sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
+    {
+        break;
+    }
+    setCfgPlayer(cfgPlayer);
+    write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
 
     //close(sockfd);
     //printf("client pthread ended, len=%d\n", len);
 }
 
+/**
+* @brief Ouverture de la connexion vers le serveur
+*
+* @param cfgClient Configuration client (nécessaire pour récupérer le port et l'ip sur laquelle se connecter)
+*/
 int open_connection(ClientConfig cfgClient) {
     int sockfd;
     struct sockaddr_in serverAddr;

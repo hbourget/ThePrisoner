@@ -40,7 +40,6 @@ int main(int argc, char** argv)
     init_sockets_array();
     /* create socket */
     sockfd = create_server_socket(cfgServer);
-
     /* listen on port , stack size 50 for incoming connections*/
     if (listen(sockfd, 50) < 0) {
         fprintf(stderr, "\033[0;31m %s: Error: cannot listen on port\033[0m\n", argv[0]);

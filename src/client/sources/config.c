@@ -4,12 +4,15 @@
 #include <string.h>
 #include "../../common/config.h"
 
+/**
+* @brief Initialisation de la configuration du client
+*/
 ClientConfig initClientCfg()
 {
   config_t cfg;
-
   config_init(&cfg);
-  /* Read the file. If there is an error, report it and exit. */
+
+  // Lit le fichier, si il y a une erreur, affichage + destruction.
   if(! config_read_file(&cfg, "cfg/client.config"))
   {
     fprintf(stderr, "%s:%d - %s\n", config_error_file(&cfg),config_error_line(&cfg), config_error_text(&cfg));
@@ -32,6 +35,9 @@ ClientConfig initClientCfg()
   return cfgClient;
 }
 
+/**
+* @brief Affichage console de la configuration du client
+*/
 void showClientConfig(ClientConfig cfgClient)
 {
     printf("\n\033[0;36m--------------------------\n\033[1;36m CLIENT CONFIGURATION\n \n\033[1;37m - Server IP Address: \033[0;36m%s \n\033[1;37m - Server Port: \033[0;36m%d \n\033[1;37m - Client ID: \033[0;36m%d\n\033[0;36m--------------------------\033[0m\n", cfgClient.serverIP, cfgClient.serverPort, cfgClient.idClient);
