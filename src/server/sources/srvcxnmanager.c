@@ -106,6 +106,9 @@ void *threadProcess(void *ptr) {
                     printf("(\033[0;33mRoom %s\033[0m) Balance of P1: %d\n", roomName, gameData.bal_p1);
                     printf("(\033[0;33mRoom %s\033[0m) Balance of P2: %d\n", roomName, gameData.bal_p2);
                     printf("(\033[0;33mRoom %s\033[0m) Round %d/%d has successfully been played.\n\n", roomName, gameData.currentRound, gameData.totalRounds);
+
+                    // TODO Ecriture dans le csv : choix + temps de réponse (mise en place d'une clock ?)
+                    writeResults(roomName, gameData);
                 }
                 
                 //Vérification si le nombre total de manches à été atteint, si oui, affichage du résultat
@@ -121,7 +124,6 @@ void *threadProcess(void *ptr) {
                     {
                         printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;32m#%d\033[0m.\n", roomName, idWinner);
                     }
-                    // TODO Ecriture dans le csv : choix + temps de réponse (mise en place d'une clock ?)
                     break;
                 }
             }

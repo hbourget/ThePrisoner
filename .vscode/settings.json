@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "stdbool.h": "c",
+        "libconfig.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
+}

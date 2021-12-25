@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <time.h>
+#include <unistd.h>
+#include <libconfig.h>
 
 #include "../../common/game.h"
 #include "../../common/config.h"
@@ -136,4 +140,35 @@ bool isGameFinished(GameData gameData)
         ret = true;
     }
     return ret;
+}
+/**
+ * @brief Ecrit les résultats dans un fichier CSV.
+ * 
+ * @param RoomName 
+ * @param gameData 
+ */
+void writeResults(const char *RoomName, GameData gameData){
+    FILE *fpt;
+
+    if((fpt = fopen("results.csv", "a+")) == NULL) {
+        fprintf(fpt,"Nom de Room, Round, ID Client, Mise, Choix, Balance actuel\n");
+    }
+
+    if(gameData.p1.action = 1){
+        fprintf(fpt, "%s, %d, %d, %d, BETRAY, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
+    } else if(gameData.p1.action = 2){
+        fprintf(fpt, "%s, %d, %d, %d, COOP, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
+    }else{
+        fprintf(fpt, "%s, %d, %d, %d, START, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
+    }
+
+    if(gameData.p2.action = 1){
+        fprintf(fpt, "%s, %d, %d, %d, BETRAY, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
+    } else if(gameData.p2.action = 2){
+        fprintf(fpt, "%s, %d, %d, %d, COOP, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
+    }else{
+        fprintf(fpt, "%s, %d, %d, %d, START, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
+    }
+    fclose(fpt);
+    printf("Choice of players recorded!\n\n");
 }

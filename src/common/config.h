@@ -5,7 +5,6 @@
 
 #ifndef THEPRISONER_CONFIG_H
 #define THEPRISONER_CONFIG_H
-
 /**
 * @brief Structure d'une room
 *

@@ -53,9 +53,6 @@ void *threadProcess(void * ptr) {
     }
     setCfgPlayer(cfgPlayer);
     write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
-
-    //close(sockfd);
-    //printf("client pthread ended, len=%d\n", len);
 }
 
 /**
@@ -67,24 +64,16 @@ int open_connection(ClientConfig cfgClient) {
     int sockfd;
     struct sockaddr_in serverAddr;
 
-    // Create the socket. 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
-    //Configure settings of the server address
-    // Address family is Internet 
     serverAddr.sin_family = AF_INET;
-    //Set port number, using htons function 
     serverAddr.sin_port = htons(cfgClient.serverPort);
-    //Set IP address to localhost
     serverAddr.sin_addr.s_addr = inet_addr(cfgClient.serverIP);
 
     memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
 
-    //Connect the socket to the server using the address
     if (connect(sockfd, (struct sockaddr *) &serverAddr, sizeof (serverAddr)) != 0) {
         printf("Fail to connect to server");
         exit(-1);
-    };
-
+    }
     return sockfd;
 }

@@ -1,14 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   srvcxnmanager.h
- * Author: aurelio
- *
- */
 #include "../../common/config.h"
 
 #ifndef SRVCXNMANAGER_H
@@ -30,6 +19,5 @@ void add(connection_t *connection);
 void del(connection_t *connection);
 void *threadProcess(void *ptr);
 int create_server_socket(ServerConfig cfgServer) ;
-//int sprintf(char *str, const char *format, ...);
 
 #endif /* SRVCXNMANAGER_H */
