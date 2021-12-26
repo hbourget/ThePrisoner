@@ -33,7 +33,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -43,6 +43,24 @@
                 <property name="margin-top">6</property>
                 <property name="margin-bottom">6</property>
                 <property name="label" translatable="yes">You are not connected !</property>
+                <attributes>
+                  <attribute name="font-desc" value="Source Code Pro Ultra-Light 11"/>
+                  <attribute name="weight" value="book"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="balance_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
+                <property name="label" translatable="yes">Balance :</property>
                 <attributes>
                   <attribute name="font-desc" value="Source Code Pro Ultra-Light 11"/>
                   <attribute name="weight" value="book"/>
