@@ -43,21 +43,24 @@ int getClientSockfd(){
 
 void *threadProcess(void * ptr) {
     int result;
-    int balance;
     PlayerGameSettings cfgPlayer;
     int sockfd = *((int *) ptr), len = 0;
 
     //Lecture de la configuration initiale du joueur
-
     while((len = read(sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
     {
         break;
     }
+
+    // Affichage de la balance initiale du client
     read(sockfd, &balance, sizeof(balance));
     set_balance(balance);
+
     setCfgPlayer(cfgPlayer);
     write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
-    read(sockfd, &result, sizeof(int));
+
+    //Affichage du résultat de la partie.
+    read(sockfd, &result, sizeof(result));
     set_result(result);
 
     close(sockfd);

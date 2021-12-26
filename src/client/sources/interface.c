@@ -47,8 +47,8 @@ void set_result(int result){
 
 void set_balance(int balance){
     GtkLabel *balance_label = GTK_LABEL(gtk_builder_get_object(build, "balance_label"));
-    char lab[8];
-    sprintf(lab, "Initial balance: %c", balance);
+    char lab[64];
+    sprintf(lab, "Initial balance: %d", balance);
     gtk_label_set_text(balance_label, lab);
 }
 
