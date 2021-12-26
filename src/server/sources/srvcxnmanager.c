@@ -15,6 +15,7 @@
 
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
 GameData gameData;
+int counter = 0;
 
 void init_sockets_array() {
     for (int i = 0; i < MAXSIMULTANEOUSCLIENTS; i++) {
@@ -50,6 +51,14 @@ void *threadProcess(void *ptr) {
     PlayerGameSettings cfgPlayer;
     gameData.currentRound = 0;
     int len = 0;
+    FILE *file;
+    counter++;
+
+    //Ecriture de l'entête du fichier results.csv (qu'une seule fois)
+    if(counter == 0)
+    {
+        writeHeader(file);
+    }
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
@@ -105,6 +114,8 @@ void *threadProcess(void *ptr) {
                     printf("\n");
                     printf("(\033[0;33mRoom %s\033[0m) Balance of P1: %d\n", roomName, gameData.bal_p1);
                     printf("(\033[0;33mRoom %s\033[0m) Balance of P2: %d\n", roomName, gameData.bal_p2);
+                    writeResults(file, roomName, gameData);
+                    printf("(\033[0;33mRoom %s\033[0m) Round results have been written in results.csv\n", roomName);
                     printf("(\033[0;33mRoom %s\033[0m) Round %d/%d has successfully been played.\n\n", roomName, gameData.currentRound, gameData.totalRounds);
                 }
                 
@@ -121,18 +132,17 @@ void *threadProcess(void *ptr) {
                     {
                         printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;32m#%d\033[0m.\n", roomName, idWinner);
                     }
-                    // TODO Ecriture dans le csv : choix + temps de réponse (mise en place d'une clock ?)
                     break;
                 }
             }
         }
     }
 
-    /*printf("Client \033[0;36m#%d \033[0mhas \033[0;31mdisconnected\033[0m.\n", cfgClient.idClient);
+    printf("Client \033[0;36m#%d \033[0mhas \033[0;31mdisconnected\033[0m.\n", cfgClient.idClient);
     close(connection->sockfd);
     del(connection);
     free(connection);
-    pthread_exit(0);*/
+    pthread_exit(0);
 }
 
 int create_server_socket(ServerConfig cfgServer) {

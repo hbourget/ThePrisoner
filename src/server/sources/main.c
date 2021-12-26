@@ -23,9 +23,13 @@
 
 #include "../headers/srvcxnmanager.h"
 #include "../../common/config.h"
+#include "../../common/game.h"
 
 int main(int argc, char** argv) 
 {
+    FILE *file;
+    writeHeader(file);
+
     ServerConfig cfgServer = initServerCfg();
 
     showServerConfig(cfgServer);
