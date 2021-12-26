@@ -7,10 +7,10 @@
 #include <arpa/inet.h>
 #include <stdbool.h>
 #include <libconfig.h>
-#include<gtk/gtk.h>
+#include <gtk/gtk.h>
 #include "../headers/clientcxnmanager.h"
 #include "../headers/interface.h"
-#include "../../common/config.h"
+#include "../../common/game.h"
 
 GtkBuilder *builder = NULL;
 GtkWidget *win;

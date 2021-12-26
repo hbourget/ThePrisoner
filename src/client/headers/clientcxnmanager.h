@@ -1,4 +1,3 @@
-#include "../../common/config.h"
 #include "../../common/game.h"
 
 #ifndef CLIENTCXNMANAGER_H

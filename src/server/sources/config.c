@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libconfig.h>
-#include "../../common/config.h"
+#include "../../common/game.h"
 
 /**
 * @brief Initialisation de la configuration du serveur à partir de son fichier (server.config)
@@ -35,6 +35,7 @@ ServerConfig initServerCfg()
   for(int i = 0; i < nbRooms; ++i)
   {
     Room theRoom;
+    GameData gameData;
     config_setting_t *room = config_setting_get_elem(roomsSettings, i);
 
     const char *name;
@@ -52,6 +53,7 @@ ServerConfig initServerCfg()
     theRoom.idClient_1 = idClient_1;
     theRoom.idClient_2 = idClient_2;
     cfgServer.gameConfig.rooms[i] = theRoom;
+    cfgServer.gameConfig.rooms[i].gameData = gameData;
   }
   return cfgServer;
 }

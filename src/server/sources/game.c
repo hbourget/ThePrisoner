@@ -4,7 +4,6 @@
 #include <stdbool.h>
 
 #include "../../common/game.h"
-#include "../../common/config.h"
 
 /**
 * @brief Instanciation du PlayerGameSettings pour le client x appartenant à la room x
