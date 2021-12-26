@@ -82,8 +82,6 @@ void *threadProcess(void *ptr) {
             //Initialisation de la configuration propre au client qui vient de se connecter.
             cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
             write(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer));
-            balance = cfgServer.gameConfig.rooms[i].bank;
-            write(connection->sockfd, &balance, sizeof(balance));
 
             while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0) 
             {
