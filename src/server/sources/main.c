@@ -27,8 +27,8 @@
 
 int main(int argc, char** argv) 
 {
-    // Création et mise en place de l'entête du fichier results.csv.
-    writeHeader();
+    FILE *file;
+    writeHeader(file);
 
     ServerConfig cfgServer = initServerCfg();
 

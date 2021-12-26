@@ -137,34 +137,30 @@ bool isGameFinished(GameData gameData)
     }
     return ret;
 }
-void writeHeader(){
-    FILE *fpt;
-    fpt = fopen("results.csv", "a+");
-    fprintf(fpt,"Nom de Room, Round, ID Client, Mise, Choix, Balance actuel\n");
-    fclose(fpt);
+void writeHeader(FILE *file)
+{
+    file = fopen("results.csv", "a+");
+    fprintf(file,"Nom de Room, Round, ID Client, Mise, Choix, Balance actuel\n");
+    fclose(file);
 }
-void writeResults(const char *RoomName, GameData gameData){
-    FILE *fpt;
-
-    if((fpt = fopen("results.csv", "r")) == NULL) {
-        fprintf(fpt,"Nom de Room, Round, ID Client, Mise, Choix, Balance actuel\n");
-    }
+void writeResults(FILE *file, const char *RoomName, GameData gameData){
+    
+    file = fopen("results.csv", "a+");
 
     if(gameData.p1.action = 1){
-        fprintf(fpt, "%s, %d, %d, %d, BETRAY, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
+        fprintf(file, "%s, %d, %d, %d, BETRAY, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
     } else if(gameData.p1.action = 2){
-        fprintf(fpt, "%s, %d, %d, %d, COOP, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
+        fprintf(file, "%s, %d, %d, %d, COOP, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
     }else{
-        fprintf(fpt, "%s, %d, %d, %d, START, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
+        fprintf(file, "%s, %d, %d, %d, START, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
     }
 
     if(gameData.p2.action = 1){
-        fprintf(fpt, "%s, %d, %d, %d, BETRAY, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
+        fprintf(file, "%s, %d, %d, %d, BETRAY, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
     } else if(gameData.p2.action = 2){
-        fprintf(fpt, "%s, %d, %d, %d, COOP, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
+        fprintf(file, "%s, %d, %d, %d, COOP, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
     }else{
-        fprintf(fpt, "%s, %d, %d, %d, START, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
+        fprintf(file, "%s, %d, %d, %d, START, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
     }
-    fclose(fpt);
-    printf("Choice of players recorded!\n\n");
+    fclose(file);
 }
