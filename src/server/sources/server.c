@@ -146,6 +146,8 @@ void *threadProcess(void *ptr) {
                     break;
                 }
             }
+            GameData resetGameData;
+            cfgServer.gameConfig.rooms[i].gameData = resetGameData;
         }
     }
 
