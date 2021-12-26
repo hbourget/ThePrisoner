@@ -1,4 +1,4 @@
-.build/ThePrisoner_Server
+.build/*
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json

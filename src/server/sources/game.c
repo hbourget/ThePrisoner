@@ -138,7 +138,7 @@ bool isGameFinished(GameData gameData)
 }
 void writeHeader(FILE *file)
 {
-    file = fopen("results.csv", "a+");
+    file = fopen("results.csv", "w");
     fprintf(file,"Nom de Room, Round, ID Client, Mise, Choix, Balance actuel\n");
     fclose(file);
 }
