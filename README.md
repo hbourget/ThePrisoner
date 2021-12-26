@@ -74,7 +74,8 @@ Pour que le projet fonctionne de manière optimale, il faut suivre le protocole 
 
  - Dans un premier temps, chaque client doit cliquer sur le bouton `Connection` sans avoir cliquer sur une mise ou une action.
  - Pour la première manche, le premier client qui s'est connecter doit jouer (appuyer sur `Validate`) en premier. 
- - Bien prendre le temps, si on change de mise ou d'action, de décocher les cases antérieurs avant de cocher les nouvelles
+ - Bien prendre le temps, si on change de mise ou d'action, de décocher les cases antérieurs avant de cocher les nouvelles.
+ - Si jamais le label de résultats ne s'affiche pas pour un client, ne pas hésiter re-appuyer sur `Validate`.
 
 > **Rappel**
 > Le fichier de résultats est écrasé à chaque lancement du serveur. Il faut donc bien penser à sauvegarder ce dernier avant de redémarrer le serveur.
