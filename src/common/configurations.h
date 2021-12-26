@@ -1,6 +1,6 @@
 #include <stdbool.h>
-#ifndef GAME_H
-#define GAME_H 
+#ifndef CONFIGURATIONS_H
+#define CONFIGURATIONS_H 
 
 //START est l'action par défaut lors de l'initialisation du PlayerGameSettings
 enum actions {START, BETRAY, COOP};

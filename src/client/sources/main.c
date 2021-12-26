@@ -8,9 +8,9 @@
 #include <stdbool.h>
 #include <libconfig.h>
 #include <gtk/gtk.h>
-#include "../headers/clientcxnmanager.h"
+#include "../headers/client.h"
 #include "../headers/interface.h"
-#include "../../common/game.h"
+#include "../../common/configurations.h"
 
 GtkBuilder *builder = NULL;
 GtkWidget *win;
@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 
     ClientConfig cfgClient = initClientCfg();
     int sockfd = open_connection(cfgClient);
-    //Transfert ces deux paramètres au clientcxnmanager
+    //Transfert ces deux paramètres au client
     setInterfaceParams(sockfd, cfgClient);
 
     showClientConfig(cfgClient);

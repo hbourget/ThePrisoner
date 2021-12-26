@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "../../common/game.h"
+#include "../../common/configurations.h"
 
 /**
 * @brief Instanciation du PlayerGameSettings pour le client x appartenant à la room x
@@ -109,6 +109,11 @@ GameData playRound(GameData gameData)
     return gameData;
 }
 
+/**
+* @brief Recupération du résultat de la partie
+*
+* @param gameData Structure des informations de jeu des clients propre à leur room actuelle
+*/
 int getWinner(GameData gameData)
 {
     int idWinner;
@@ -127,6 +132,11 @@ int getWinner(GameData gameData)
     return idWinner;
 }
 
+/**
+* @brief Vérification si le nombre de rounds total à été atteint
+*
+* @param gameData Structure des informations de jeu des clients propre à leur room actuelle
+*/
 bool isGameFinished(GameData gameData)
 {
     bool ret = false;
@@ -136,30 +146,44 @@ bool isGameFinished(GameData gameData)
     }
     return ret;
 }
+
+/**
+* @brief Ecriture de l'entête dans le fichier des résultats
+*
+* @param file Fichier "results.csv"
+*/
 void writeHeader(FILE *file)
 {
     file = fopen("results.csv", "w");
-    fprintf(file,"Nom de Room, Round, ID Client, Mise, Choix, Balance actuel\n");
+    fprintf(file,"Room, Round, ID_Client, Bet, Action, Balance\n");
     fclose(file);
 }
-void writeResults(FILE *file, const char *RoomName, GameData gameData){
+
+/**
+* @brief Ecriture des résultats dans un fichier
+*
+* @param file Fichier "results.csv"
+* @param  roomName Nom de la room courante
+* @param gameData Structure des informations de jeu des clients propre à leur room actuelle
+*/
+void writeResults(FILE *file, const char *roomName, GameData gameData){
     
     file = fopen("results.csv", "a+");
 
     if(gameData.p1.action = 1){
-        fprintf(file, "%s, %d, %d, %d, BETRAY, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
+        fprintf(file, "%s, %d, %d, %d, BETRAY, %d\n", roomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
     } else if(gameData.p1.action = 2){
-        fprintf(file, "%s, %d, %d, %d, COOP, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
+        fprintf(file, "%s, %d, %d, %d, COOP, %d\n", roomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
     }else{
-        fprintf(file, "%s, %d, %d, %d, START, %d\n", RoomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
+        fprintf(file, "%s, %d, %d, %d, START, %d\n", roomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
     }
 
     if(gameData.p2.action = 1){
-        fprintf(file, "%s, %d, %d, %d, BETRAY, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
+        fprintf(file, "%s, %d, %d, %d, BETRAY, %d\n", roomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
     } else if(gameData.p2.action = 2){
-        fprintf(file, "%s, %d, %d, %d, COOP, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
+        fprintf(file, "%s, %d, %d, %d, COOP, %d\n", roomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
     }else{
-        fprintf(file, "%s, %d, %d, %d, START, %d\n", RoomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
+        fprintf(file, "%s, %d, %d, %d, START, %d\n", roomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
     }
     fclose(file);
 }
