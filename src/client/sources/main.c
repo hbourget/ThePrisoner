@@ -33,6 +33,7 @@ int main(int argc, char** argv) {
     gtk_init(&argc, &argv);
 
     builder = gtk_builder_new_from_file("glade/dilemme_prisonnier.glade");
+    set_builder(builder);
 
     win = GTK_WIDGET(gtk_builder_get_object(builder, "app_win"));
     gtk_builder_connect_signals(builder, NULL);
