@@ -9,15 +9,23 @@
 #include <libconfig.h>
 #include <gtk/gtk.h>
 
-#include "../headers/clientcxnmanager.h"
-#include "../../common/config.h"
-#include "../../common/game.h"
+#include "../headers/client.h"
+#include "../../common/configurations.h"
 #include "../headers/interface.h"
 
 ClientConfig cfgClient;
 int sockfd;
 PlayerGameSettings cfgPlayer;
+GtkBuilder *build;
 
+/**
+ * @brief Set the builder object
+ * 
+ * @param builder 
+ */
+void set_builder(GtkBuilder *builder){
+    build = builder;
+}
 void setCfgPlayer(PlayerGameSettings cfg){
     cfgPlayer = cfg;
 }
@@ -26,26 +34,44 @@ void on_window_main_destroy() {
     printf("Quitting..\n ");
     gtk_main_quit();
 }
+void set_result(int result){
+    GtkLabel *information = GTK_LABEL(gtk_builder_get_object(build, "information_label"));
+    if(result == 1){
+        gtk_label_set_text(information, "You have won !");
+    } else if(result == 2){
+        gtk_label_set_text(information, "You have lost !");
+    }else{
+        gtk_label_set_text(information, "Game is tied !");
+    }
+}
 
 //Bouton "Se connecter"
 void on_connect_button_click(GtkWidget *widget)
 {
+    //Définition d'un pointeur sur le label de connexion
+    GtkLabel *information = GTK_LABEL(gtk_builder_get_object(build, "information_label"));
+
     cfgClient = getClientConfig();
     sockfd = getClientSockfd();
+
+    int id = cfgClient.idClient;
+    char base[64];
+    sprintf(base, "You are connected ! ID Client : %d", id);
+
     write(sockfd, &cfgClient, sizeof(cfgClient));
 
     //Desactivation du bouton
     gtk_widget_set_sensitive(widget, FALSE);
-}
-
-void updateInterface(PlayerGameSettings cfg){
-
+    
+    // Mise à jour du label de status de connexion.
+    gtk_label_set_text(information, base);
 }
 void on_validate_button_click () {
     cfgPlayer.responded = true;
     printf("Bet: %d\n", cfgPlayer.bet);
     printf("Action: %d (1=COOP, 2=BETRAY)\n", cfgPlayer.action);
     write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
+    cfgPlayer.responded = false;
 }
 void on_leave_button_click(GtkWidget *widget){
     printf("Quitting..\n ");

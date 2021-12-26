@@ -1,7 +1,6 @@
 #include <stdbool.h>
-#include "config.h"
-#ifndef GAME_H
-#define GAME_H 
+#ifndef CONFIGURATIONS_H
+#define CONFIGURATIONS_H 
 
 //START est l'action par défaut lors de l'initialisation du PlayerGameSettings
 enum actions {START, BETRAY, COOP};
@@ -39,11 +38,72 @@ typedef struct {
     PlayerGameSettings p1;
     PlayerGameSettings p2;
 } GameData;
+/**
+* @brief Structure d'une room
+*
+* @param name Nom de la room
+* @param nbRounds Nombre de manches
+* @param bank Montant de la balance initiale
+* @param idClient_1 ID du premier client attendu
+* @param idClient_2 ID du second client attendu
+*/
+typedef struct {
+    GameData gameData;
+    const char *name;
+    int nbRounds;
+    int bank;
+    int idClient_1;
+    int idClient_2;
+} Room;
 
+/**
+* @brief Structure de la configuration de la partie (Une partie peut avoir plusieurs rooms)
+*
+* @param rooms Liste de rooms
+* @param nbRooms Nombre de rooms
+*/
+typedef struct {
+    Room rooms[50];
+    int nbRooms;
+} GameConfig;
+
+/**
+* @brief Structure de la configuration du serveur
+*
+* @param serverIP Adresse IP du serveur
+* @param serverPort Port du serveur
+* @param gameConfig Configuration de la partie
+*/
+typedef struct {
+    const char *serverIP;
+    int serverPort;
+    GameConfig gameConfig;
+} ServerConfig;
+
+/**
+* @brief Structure de la configuration du client
+*
+* @param serverIP Adresse IP du serveur
+* @param serverPort Port du serveur
+* @param idClient ID du client
+*/
+typedef struct {
+    char serverIP[15];
+    int serverPort;
+    int idClient;
+} ClientConfig;
+
+ServerConfig initServerCfg();
+ClientConfig initClientCfg();
+void showServerConfig(ServerConfig cfgServer);
+void showRooms(ServerConfig cfgServer);
+void showClientConfig(ClientConfig cfgClient);
 PlayerGameSettings initPlayerGameSettings(ServerConfig cfgServer, int roomID, int idClient);
 GameData firstHydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int i);
 GameData hydrateGameData(PlayerGameSettings cfgPlayer, GameData gameData, ServerConfig cfgServer, int i);
 GameData playRound(GameData gameData);
 int getWinner(GameData gameData);
 bool isGameFinished(GameData gameData);
+void writeResults(FILE *file, const char *RoomName, GameData gameData);
+void writeHeader(FILE *file);
 #endif /* GAME.H */

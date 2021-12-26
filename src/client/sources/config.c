@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <libconfig.h>
 #include <string.h>
-#include "../../common/config.h"
+#include "../../common/configurations.h"
 
 /**
 * @brief Initialisation de la configuration du client

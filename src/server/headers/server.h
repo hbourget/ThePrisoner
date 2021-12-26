@@ -1,21 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+#include "../../common/configurations.h"
 
-/* 
- * File:   srvcxnmanager.h
- * Author: aurelio
- *
- */
-#include "../../common/config.h"
-
-#ifndef SRVCXNMANAGER_H
-#define SRVCXNMANAGER_H
+#ifndef SERVER_H
+#define SERVER_H
 
 #define BUFFERSIZE 2048
 #define MAXSIMULTANEOUSCLIENTS 100
+#define MAXSIMULTANEOUSROOMS 50
 
 typedef struct {
     int sockfd;
@@ -24,12 +14,12 @@ typedef struct {
     int index;
 } connection_t;
 
-
 void init_sockets_array();
+void setCfgServer(ServerConfig cfg);
 void add(connection_t *connection);
 void del(connection_t *connection);
 void *threadProcess(void *ptr);
 int create_server_socket(ServerConfig cfgServer) ;
 //int sprintf(char *str, const char *format, ...);
 
-#endif /* SRVCXNMANAGER_H */
+#endif /* SERVER_H */

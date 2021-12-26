@@ -9,13 +9,18 @@
 #include <arpa/inet.h>
 #include <libconfig.h>
 
-#include "../headers/srvcxnmanager.h"
-#include "../../common/config.h"
-#include "../../common/game.h"
+#include "../headers/server.h"
+#include "../../common/configurations.h"
 
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
-GameData gameData;
+ServerConfig cfgServer;
+int counter = 0;
+int result = -1;
 
+
+void setCfgServer(ServerConfig cfg){
+    cfgServer = cfg;
+}
 void init_sockets_array() {
     for (int i = 0; i < MAXSIMULTANEOUSCLIENTS; i++) {
         connections[i] = NULL;
@@ -45,11 +50,17 @@ void del(connection_t *connection) {
 
 void *threadProcess(void *ptr) {
     connection_t *connection;
-    ServerConfig cfgServer = initServerCfg();
     ClientConfig cfgClient;
     PlayerGameSettings cfgPlayer;
-    gameData.currentRound = 0;
     int len = 0;
+    FILE *file;
+
+    //Ecriture de l'entête du fichier results.csv (qu'une seule fois)
+    if(counter == 0)
+    {
+        writeHeader(file);
+    }
+    counter++;
 
     if (!ptr) pthread_exit(0);
     connection = (connection_t *) ptr;
@@ -74,10 +85,10 @@ void *threadProcess(void *ptr) {
 
             while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0) 
             {
-                gameData = firstHydrateGameData(cfgPlayer, gameData, cfgServer, i);
+                cfgServer.gameConfig.rooms[i].gameData = firstHydrateGameData(cfgPlayer, cfgServer.gameConfig.rooms[i].gameData, cfgServer, i);
 
                 //Le serveur bloque dans cette section et attend que deux clients de la même room se connecte.
-                if(gameData.p1.idClient != 0 && gameData.p2.idClient != 0) 
+                if(cfgServer.gameConfig.rooms[i].gameData.p1.idClient != 0 && cfgServer.gameConfig.rooms[i].gameData.p2.idClient  != 0) 
                 {
                     printf("(\033[0;33mRoom %s\033[0m) Both client have connected.\n", roomName);
                     break;
@@ -91,48 +102,58 @@ void *threadProcess(void *ptr) {
             while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0)
             {
                 //A la reception d'un envoi du client, hydratation de gameData, notamment pour récupérer le status de réponse.
-                gameData = hydrateGameData(cfgPlayer, gameData, cfgServer, i);
+                cfgServer.gameConfig.rooms[i].gameData = hydrateGameData(cfgPlayer, cfgServer.gameConfig.rooms[i].gameData, cfgServer, i);
 
                 //Si les deux joueurs on répondu, on joue le round
-                if(gameData.p1.responded == true && gameData.p2.responded == true)
+                if(cfgServer.gameConfig.rooms[i].gameData.p1.responded == true && cfgServer.gameConfig.rooms[i].gameData.p2.responded == true)
                 {
-                    gameData = playRound(gameData);
-                    printf("(\033[0;33mRoom %s\033[0m) Playing round %d/%d...\n", roomName, gameData.currentRound, gameData.totalRounds);
-                    printf("(\033[0;33mRoom %s\033[0m) P1 action: %d (1=BETRAY, 2=COOP)\n", roomName, gameData.p1.action);
-                    printf("(\033[0;33mRoom %s\033[0m) P2 action: %d (1=BETRAY, 2=COOP)\n", roomName, gameData.p2.action);
-                    printf("(\033[0;33mRoom %s\033[0m) P1 bet: %d\n", roomName, gameData.p1.bet);
-                    printf("(\033[0;33mRoom %s\033[0m) P2 bet: %d\n", roomName, gameData.p2.bet);
+                    cfgServer.gameConfig.rooms[i].gameData = playRound(cfgServer.gameConfig.rooms[i].gameData);
+                    printf("(\033[0;33mRoom %s\033[0m) Playing round %d/%d...\n", roomName, cfgServer.gameConfig.rooms[i].gameData.currentRound, cfgServer.gameConfig.rooms[i].gameData.totalRounds);
+                    printf("(\033[0;33mRoom %s\033[0m) P1 action: %d (1=BETRAY, 2=COOP)\n", roomName, cfgServer.gameConfig.rooms[i].gameData.p1.action);
+                    printf("(\033[0;33mRoom %s\033[0m) P2 action: %d (1=BETRAY, 2=COOP)\n", roomName, cfgServer.gameConfig.rooms[i].gameData.p2.action);
+                    printf("(\033[0;33mRoom %s\033[0m) P1 bet: %d\n", roomName, cfgServer.gameConfig.rooms[i].gameData.p1.bet);
+                    printf("(\033[0;33mRoom %s\033[0m) P2 bet: %d\n", roomName, cfgServer.gameConfig.rooms[i].gameData.p2.bet);
                     printf("\n");
-                    printf("(\033[0;33mRoom %s\033[0m) Balance of P1: %d\n", roomName, gameData.bal_p1);
-                    printf("(\033[0;33mRoom %s\033[0m) Balance of P2: %d\n", roomName, gameData.bal_p2);
-                    printf("(\033[0;33mRoom %s\033[0m) Round %d/%d has successfully been played.\n\n", roomName, gameData.currentRound, gameData.totalRounds);
+                    printf("(\033[0;33mRoom %s\033[0m) Balance of P1: %d\n", roomName, cfgServer.gameConfig.rooms[i].gameData.bal_p1);
+                    printf("(\033[0;33mRoom %s\033[0m) Balance of P2: %d\n", roomName, cfgServer.gameConfig.rooms[i].gameData.bal_p2);
+                    writeResults(file, roomName, cfgServer.gameConfig.rooms[i].gameData);
+                    printf("(\033[0;33mRoom %s\033[0m) Round results have been written in results.csv\n", roomName);
+                    printf("(\033[0;33mRoom %s\033[0m) Round %d/%d has successfully been played.\n\n", roomName, cfgServer.gameConfig.rooms[i].gameData.currentRound, cfgServer.gameConfig.rooms[i].gameData.totalRounds);
                 }
                 
                 //Vérification si le nombre total de manches à été atteint, si oui, affichage du résultat
-                if(isGameFinished(gameData))
+                if(isGameFinished(cfgServer.gameConfig.rooms[i].gameData))
                 {
                     printf("(\033[0;33mRoom %s\033[0m) Game has finished. Drawing results...\n", roomName);
-                    int idWinner = getWinner(gameData);
+                    int idWinner = getWinner(cfgServer.gameConfig.rooms[i].gameData);
                     if(idWinner == 0)
                     {
                         printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;35mTIE\033[0m).\n", roomName);
+                        result = 3;
+                        write(connection->sockfd, &result, sizeof(result));
                     }
                     else
                     {
-                        printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;32m#%d\033[0m.\n", roomName, idWinner);
+                        printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;32m#%d won\033[0m.\n", roomName, idWinner);
+                        if(idWinner == cfgPlayer.idClient){
+                            result = 1;
+                            write(connection->sockfd, &result, sizeof(result));
+                        }else{
+                            result = 2;
+                            write(connection->sockfd, &result, sizeof(result));
+                        }
                     }
-                    // TODO Ecriture dans le csv : choix + temps de réponse (mise en place d'une clock ?)
                     break;
                 }
             }
         }
     }
 
-    /*printf("Client \033[0;36m#%d \033[0mhas \033[0;31mdisconnected\033[0m.\n", cfgClient.idClient);
+    printf("Client \033[0;36m#%d \033[0mhas \033[0;31mdisconnected\033[0m.\n", cfgClient.idClient);
     close(connection->sockfd);
     del(connection);
     free(connection);
-    pthread_exit(0);*/
+    pthread_exit(0);
 }
 
 int create_server_socket(ServerConfig cfgServer) {

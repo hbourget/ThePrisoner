@@ -2,36 +2,6 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <object class="GtkImage" id="10">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../img/10$.png</property>
-  </object>
-  <object class="GtkImage" id="100">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../img/100$.png</property>
-  </object>
-  <object class="GtkImage" id="25">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../img/25$.png</property>
-  </object>
-  <object class="GtkImage" id="50">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../img/50$.png</property>
-  </object>
-  <object class="GtkImage" id="betray">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../img/knife.png</property>
-  </object>
-  <object class="GtkImage" id="cooperate">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../img/support.png</property>
-  </object>
   <object class="GtkApplicationWindow" id="app_win">
     <property name="can-focus">False</property>
     <property name="resizable">False</property>
@@ -39,43 +9,65 @@
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
+        <property name="has-tooltip">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="title">
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes">DILEMME DU PRISONNIER</property>
-            <attributes>
-              <attribute name="font-desc" value="Sans Bold 22"/>
-              <attribute name="weight" value="bold"/>
-            </attributes>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel" id="title">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">6</property>
+                <property name="margin-right">6</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
+                <property name="label" translatable="yes">The Prisoner Dilemma</property>
+                <attributes>
+                  <attribute name="font-desc" value="Source Code Pro Ultra-Light 22"/>
+                  <attribute name="weight" value="book"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="information_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
+                <property name="label" translatable="yes">You are not connected !</property>
+                <attributes>
+                  <attribute name="font-desc" value="Source Code Pro Ultra-Light 11"/>
+                  <attribute name="weight" value="book"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">6</property>
             <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="connect_socket">
-            <property name="label" translatable="yes">Se connecter</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="margin-bottom">25</property>
-            <signal name="clicked" handler="on_connect_button_click" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">False</property>
-            <property name="padding">20</property>
-            <property name="position">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
             <property name="orientation">vertical</property>
             <child>
               <!-- n-columns=4 n-rows=1 -->
@@ -90,8 +82,6 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="image">10</property>
-                    <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="on_toggled_10" swapped="no"/>
                   </object>
@@ -106,8 +96,6 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="image">25</property>
-                    <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="on_toggled_25" swapped="no"/>
                   </object>
@@ -122,8 +110,6 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="image">50</property>
-                    <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="on_toggled_50" swapped="no"/>
                   </object>
@@ -138,8 +124,6 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="image">100</property>
-                    <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="on_toggled_100" swapped="no"/>
                   </object>
@@ -157,32 +141,16 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLevelBar" id="time">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="halign">center</property>
-                <property name="max-value">15.000000000223517</property>
-                <property name="mode">discrete</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">center</property>
                 <child>
                   <object class="GtkCheckButton" id="etray">
-                    <property name="label" translatable="yes">betray</property>
+                    <property name="label" translatable="yes">Betray</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="image">betray</property>
-                    <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="on_toggled_betray" swapped="no"/>
                   </object>
@@ -194,12 +162,10 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="ooperate">
-                    <property name="label" translatable="yes">cooperate</property>
+                    <property name="label" translatable="yes">Cooperate</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="image">cooperate</property>
-                    <property name="image-position">top</property>
                     <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="on_toggled_cooperate" swapped="no"/>
                   </object>
@@ -221,6 +187,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">6</property>
             <property name="position">2</property>
           </packing>
         </child>
@@ -229,7 +196,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">center</property>
-            <property name="orientation">vertical</property>
+            <property name="spacing">10</property>
             <child>
               <object class="GtkButton" id="validate">
                 <property name="label" translatable="yes">Validate</property>
@@ -239,15 +206,32 @@
                 <signal name="clicked" handler="on_validate_button_click" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">False</property>
-                <property name="padding">20</property>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
+              <object class="GtkButton" id="connect_socket">
+                <property name="label" translatable="yes">Connection</property>
+                <property name="width-request">-1</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="resize-mode">immediate</property>
+                <signal name="clicked" handler="on_connect_button_click" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="leave">
-                <property name="label" translatable="yes">Leave</property>
+                <property name="label" translatable="yes">  Leave  </property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -256,13 +240,12 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack-type">end</property>
-                <property name="position">1</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="padding">20</property>
             <property name="position">3</property>

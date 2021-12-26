@@ -1,4 +1,4 @@
-.build/ThePrisoner_Server
+.build/*
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -160,3 +160,4 @@ fabric.properties
 modules.xml
 .idea/misc.xml
 *.ipr
+results.csv
