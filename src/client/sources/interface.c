@@ -10,7 +10,6 @@
 #include <gtk/gtk.h>
 
 #include "../headers/clientcxnmanager.h"
-#include "../../common/config.h"
 #include "../../common/game.h"
 #include "../headers/interface.h"
 
