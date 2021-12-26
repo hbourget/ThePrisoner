@@ -15,6 +15,7 @@
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
 ServerConfig cfgServer;
 int counter = 0;
+int result = -1;
 
 
 void setCfgServer(ServerConfig cfg){
@@ -128,11 +129,19 @@ void *threadProcess(void *ptr) {
                     if(idWinner == 0)
                     {
                         printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;35mTIE\033[0m).\n", roomName);
+                        result = 3;
+                        write(connection->sockfd, &result, sizeof(result));
                     }
                     else
                     {
                         printf("(\033[0;33mRoom %s\033[0m) Game result : \033[1;32m#%d won\033[0m.\n", roomName, idWinner);
-                        
+                        if(idWinner == cfgPlayer.idClient){
+                            result = 1;
+                            write(connection->sockfd, &result, sizeof(result));
+                        }else{
+                            result = 2;
+                            write(connection->sockfd, &result, sizeof(result));
+                        }
                     }
                     break;
                 }

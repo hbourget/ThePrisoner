@@ -34,6 +34,16 @@ void on_window_main_destroy() {
     printf("Quitting..\n ");
     gtk_main_quit();
 }
+void set_result(int result){
+    GtkLabel *information = GTK_LABEL(gtk_builder_get_object(build, "information_label"));
+    if(result == 1){
+        gtk_label_set_text(information, "You have won !");
+    } else if(result == 2){
+        gtk_label_set_text(information, "You have lost !");
+    }else{
+        gtk_label_set_text(information, "Game is tied !");
+    }
+}
 
 //Bouton "Se connecter"
 void on_connect_button_click(GtkWidget *widget)

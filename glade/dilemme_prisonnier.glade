@@ -24,7 +24,7 @@
                 <property name="margin-right">6</property>
                 <property name="margin-top">6</property>
                 <property name="margin-bottom">6</property>
-                <property name="label" translatable="yes">DILEMME DU PRISONNIER</property>
+                <property name="label" translatable="yes">The Prisoner Dilemma</property>
                 <attributes>
                   <attribute name="font-desc" value="Source Code Pro Ultra-Light 22"/>
                   <attribute name="weight" value="book"/>
@@ -44,7 +44,7 @@
                 <property name="margin-bottom">6</property>
                 <property name="label" translatable="yes">You are not connected !</property>
                 <attributes>
-                  <attribute name="font-desc" value="Source Code Pro Ultra-Light 10"/>
+                  <attribute name="font-desc" value="Source Code Pro Ultra-Light 11"/>
                   <attribute name="weight" value="book"/>
                 </attributes>
               </object>

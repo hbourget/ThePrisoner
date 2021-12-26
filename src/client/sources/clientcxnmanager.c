@@ -10,6 +10,7 @@
 
 #include "../headers/clientcxnmanager.h"
 #include "../../common/game.h"
+#include "../headers/interface.h"
 
 GameData gameData;
 
@@ -41,6 +42,7 @@ int getClientSockfd(){
 }
 
 void *threadProcess(void * ptr) {
+    int result;
     PlayerGameSettings cfgPlayer;
     int sockfd = *((int *) ptr), len = 0;
 
@@ -53,8 +55,10 @@ void *threadProcess(void * ptr) {
     setCfgPlayer(cfgPlayer);
     write(sockfd, &cfgPlayer, sizeof(cfgPlayer));
 
-    //close(sockfd);
-    //printf("client pthread ended, len=%d\n", len);
+    read(sockfd, &result, sizeof(int));
+    set_result(result);
+
+    close(sockfd);
 }
 
 /**
