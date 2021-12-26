@@ -16,7 +16,7 @@ connection_t* connections[MAXSIMULTANEOUSCLIENTS];
 ServerConfig cfgServer;
 int counter = 0;
 int result = -1;
-
+int balance = 0;
 
 void setCfgServer(ServerConfig cfg){
     cfgServer = cfg;
@@ -82,6 +82,7 @@ void *threadProcess(void *ptr) {
             //Initialisation de la configuration propre au client qui vient de se connecter.
             cfgPlayer = initPlayerGameSettings(cfgServer, i, cfgClient.idClient);
             send(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer), 0);
+            write(connection->sockfd, &balance, sizeof(balance));
 
             while((len = read(connection->sockfd, &cfgPlayer, sizeof(cfgPlayer))) > 0) 
             {

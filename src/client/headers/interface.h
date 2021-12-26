@@ -6,6 +6,7 @@
 void setCfgPlayer(PlayerGameSettings cfg);
 void set_builder(GtkBuilder *builder);
 void set_result(int result);
+void set_balance(int balance);
 PlayerGameSettings getCfgPlayer();
 void on_window_main_destroy();
 void on_connect_button_click();
