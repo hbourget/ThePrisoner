@@ -1,4 +1,3 @@
-
 # Le dilemme du prisonnier
 ## Situation
 L’ICS (institue of Cognitives Sciences) est un laboratoire interdisciplinaire qui intègre l'expertise de chercheurs des Sciences de la Vie (psychologie cognitive, neurosciences) et de médecine (pédopsychiatrie, neuropédiatrie) avec celle de chercheurs des Sciences Humaines et Sociales (linguistique computationnelle et théorique et philosophie) pour étudier la nature et la spécificité de l'esprit humain.
@@ -60,3 +59,23 @@ rooms = #Nombre de rooms illimités, il suffit de copier/coller les structures c
   }
 );
 ```
+
+## Documentation Doxygen
+Il est possible de générer la documentation technique de ce projet avec [Doxygen](https://www.doxygen.nl/index.html) en suivant le protocole suivant :
+
+  * Installation de Doxygen  ``apt install doxygen`` / `dnf install doxygen`
+  * Génération de la documentation  ``make documentation``
+
+La documentation est généré sous format HTML. Pour la lire, il suffit d'ouvrir le fichier ``index.html`` situer dans le dossier **documentation** qui vient d'être créé à la racine du projet.
+
+## Protocole d'utilisation
+
+Pour que le projet fonctionne de manière optimale, il faut suivre le protocole suivant :
+
+ - Dans un premier temps, chaque client doit cliquer sur le bouton `Connection` sans avoir cliquer sur une mise ou une action.
+ - Pour la première manche, le premier client qui s'est connecter doit jouer (appuyer sur `Validate`) en premier. 
+ - Bien prendre le temps, si on change de mise ou d'action, de décocher les cases antérieurs avant de cocher les nouvelles.
+ - Si jamais le label de résultats ne s'affiche pas pour un client, ne pas hésiter à re-appuyer sur `Validate`.
+
+> **Rappel**
+> Le fichier de résultats est écrasé à chaque lancement du serveur. Il faut donc bien penser à sauvegarder ce dernier avant de redémarrer le serveur.
