@@ -9,8 +9,8 @@
 #include <arpa/inet.h>
 #include <libconfig.h>
 
-#include "../headers/srvcxnmanager.h"
-#include "../../common/game.h"
+#include "../headers/server.h"
+#include "../../common/configurations.h"
 
 connection_t* connections[MAXSIMULTANEOUSCLIENTS];
 ServerConfig cfgServer;

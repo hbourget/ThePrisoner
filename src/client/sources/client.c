@@ -8,8 +8,8 @@
 #include <stdbool.h>
 #include <libconfig.h>
 
-#include "../headers/clientcxnmanager.h"
-#include "../../common/game.h"
+#include "../headers/client.h"
+#include "../../common/configurations.h"
 #include "../headers/interface.h"
 
 GameData gameData;

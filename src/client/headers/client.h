@@ -1,7 +1,7 @@
-#include "../../common/game.h"
+#include "../../common/configurations.h"
 
-#ifndef CLIENTCXNMANAGER_H
-#define CLIENTCXNMANAGER_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
 #define BUFFERSIZE 2048
 
@@ -24,5 +24,5 @@ void *threadProcess(void * ptr);
 void setCfgPlayer(PlayerGameSettings cfg);
 PlayerGameSettings getCfgPlayer();
 
-#endif /* CLIENTCXNMANAGER_H */
+#endif /* CLIENT_H */
 

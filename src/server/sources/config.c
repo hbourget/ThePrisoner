@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libconfig.h>
-#include "../../common/game.h"
+#include "../../common/configurations.h"
 
 /**
 * @brief Initialisation de la configuration du serveur à partir de son fichier (server.config)

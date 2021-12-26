@@ -9,8 +9,8 @@
 
 #include <stdbool.h>
 
-#include "../headers/srvcxnmanager.h"
-#include "../../common/game.h"
+#include "../headers/server.h"
+#include "../../common/configurations.h"
 
 int main(int argc, char** argv) 
 {
