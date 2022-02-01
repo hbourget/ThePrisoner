@@ -170,7 +170,7 @@ void writeResults(FILE *file, const char *roomName, GameData gameData){
     
     file = fopen("results.csv", "a+");
 
-    if(gameData.p1.action = 1){
+    if(gameData.p1.action == 1){
         fprintf(file, "%s, %d, %d, %d, BETRAY, %d\n", roomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
     } else if(gameData.p1.action = 2){
         fprintf(file, "%s, %d, %d, %d, COOP, %d\n", roomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
@@ -178,7 +178,7 @@ void writeResults(FILE *file, const char *roomName, GameData gameData){
         fprintf(file, "%s, %d, %d, %d, START, %d\n", roomName, gameData.currentRound, gameData.p1.idClient, gameData.p1.bet, gameData.bal_p1);
     }
 
-    if(gameData.p2.action = 1){
+    if(gameData.p2.action == 1){
         fprintf(file, "%s, %d, %d, %d, BETRAY, %d\n", roomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
     } else if(gameData.p2.action = 2){
         fprintf(file, "%s, %d, %d, %d, COOP, %d\n", roomName, gameData.currentRound, gameData.p2.idClient, gameData.p2.bet, gameData.bal_p2);
