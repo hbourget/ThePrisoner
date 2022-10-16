@@ -26,7 +26,7 @@ Le projet du dilemme du prisonnier repose sur le système **Linux** ainsi que su
 
 ## Configuration
 
-Il est possible de configuration à souhait le programme. Les fichiers à modifier sont :
+Il est possible de configurer à souhait le programme. Les fichiers à modifier sont :
 
  - `cfg/client.config`
 
