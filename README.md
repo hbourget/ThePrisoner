@@ -1,8 +1,8 @@
 # Le dilemme du prisonnier
-## Situation
-L’ICS (institue of Cognitives Sciences) est un laboratoire interdisciplinaire qui intègre l'expertise de chercheurs des Sciences de la Vie (psychologie cognitive, neurosciences) et de médecine (pédopsychiatrie, neuropédiatrie) avec celle de chercheurs des Sciences Humaines et Sociales (linguistique computationnelle et théorique et philosophie) pour étudier la nature et la spécificité de l'esprit humain.
+## Interface
+Les usagers jouent l’un contre l’autre, un nombre de fois à définir, sans jamais savoir qui sont leurs adversaires. On définira une partie comme étant un certain nombre de manches. Une manche est définie comme une confrontation trahison-collaboration entre les deux volontaires avec des mises.
 
-Le doctorant menant l'expérimentation a besoin d’accumuler des données de jeu. Il a besoin que des volontaires jouent l’un contre l’autre un nombre de fois à définir, sans jamais savoir qui sont leurs adversaires. On définira une partie comme étant un certain nombre de manches. Une manche est définie comme une confrontation trahison-collaboration entre les deux volontaires.
+![Interface](interface.png)
 
 ## Dépendances
 Le projet du dilemme du prisonnier repose sur le système **Linux** ainsi que sur **plusieurs bibliothèques**. Il faut alors préinstaller :
