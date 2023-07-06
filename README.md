@@ -1,8 +1,4 @@
 # Le dilemme du prisonnier
-## Interface
-Les usagers jouent l’un contre l’autre, un nombre de fois à définir, sans jamais savoir qui sont leurs adversaires. On définira une partie comme étant un certain nombre de manches. Une manche est définie comme une confrontation trahison-collaboration entre les deux volontaires avec des mises.
-
-![Interface](interface.png)
 
 ## Dépendances
 Le projet du dilemme du prisonnier repose sur le système **Linux** ainsi que sur **plusieurs bibliothèques**. Il faut alors préinstaller :
@@ -23,6 +19,11 @@ Le projet du dilemme du prisonnier repose sur le système **Linux** ainsi que su
  3. Générer les exécutables `make all`, `make client`, `make server`
  4. Génération de la documentation `make documentation`
  5. Lancement des exécutables depuis la racine `./build/client`, `./build/server`
+
+## Interface
+Les usagers jouent l’un contre l’autre, un nombre de fois à définir, sans jamais savoir qui sont leurs adversaires. On définira une partie comme étant un certain nombre de manches. Une manche est définie comme une confrontation trahison-collaboration entre les deux volontaires avec des mises.
+
+![Interface](interface.png)
 
 ## Configuration
 
